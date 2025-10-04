@@ -34,19 +34,47 @@ let chosenWord = "";
 
 // Options values for buttons
 let options = {
-  frutas: [
+  Frutas: [
     "Manzana", "Arandano", "Mandarina", "Piña", "Granada", "Sandia",
-    "Platano", "Mango", "Fresa", "Kiwi", "Papaya", "Cereza"
+    "Platano", "Mango", "Fresa", "Kiwi", "Papaya", "Cereza",
+    "Melocoton", "Uva", "Melon", "Pera", "Guayaba", "Tamarindo",
+    "Naranja", "Limon", "Frambuesa", "Coco", "Maracuya", "Higo"
   ],
-  animales: [
+  Animales: [
     "Erizo", "Rinoceronte", "Ardilla", "Pantera", "Morsa", "Cebra",
-    "Elefante", "Jirafa", "Tigre", "Oso", "Lobo", "Delfin"
+    "Elefante", "Jirafa", "Tigre", "Oso", "Lobo", "Delfin",
+    "Gato", "Perro", "Caballo", "Camello", "Pinguino", "Gorila",
+    "Zorro", "Ballena", "Koala", "Leopardo", "Canguro", "Buho"
   ],
   Paises: [
     "India", "Hungria", "Kirguistan", "Suiza", "Zimbabue", "Dominica",
-    "España", "Mexico", "Argentina", "Japon", "Australia", "Canada"
+    "España", "Mexico", "Argentina", "Japon", "Australia", "Canada",
+    "Chile", "Colombia", "Peru", "Italia", "Francia", "Alemania",
+    "China", "Corea", "Noruega", "Grecia", "Portugal", "Egipto"
+  ],
+  Colores: [
+    "Rojo", "Azul", "Verde", "Amarillo", "Rosa", "Negro",
+    "Blanco", "Gris", "Marron", "Naranja", "Violeta", "Turquesa",
+    "Beige", "Celeste", "Dorado", "Plateado", "Magenta", "Cian"
+  ],
+  Comidas: [
+    "Pizza", "Hamburguesa", "Sushi", "Taco", "Empanada", "Arepa",
+    "Paella", "Pasta", "Ensalada", "Ceviche", "Burrito", "Hotdog",
+    "Lasaña", "Croqueta", "Sopa", "Tortilla", "Tamales", "Gazpacho"
+  ],
+  Profesiones: [
+    "Doctor", "Ingeniero", "Maestro", "Policia", "Bombero", "Carpintero",
+    "Panadero", "Electricista", "Mecanico", "Arquitecto", "Abogado", "Enfermero",
+    "Cantante", "Actor", "Pintor", "Cocinero", "Programador", "Diseñador"
+  ],
+  Ciudades: [
+    "Madrid", "Barcelona", "Buenos Aires", "Lima", "Bogota", "Caracas",
+    "Santo Domingo", "Ciudad de Mexico", "Montevideo", "Quito", "La Paz", "Santiago",
+    "Paris", "Roma", "Berlin", "Londres", "Tokio", "Seul",
+    "Toronto", "Nueva York", "Los Angeles", "Sydney", "Lisboa", "Atenas"
   ]
 };
+
 
 // ==================== SISTEMA DE AUTENTICACIÓN ====================
 
