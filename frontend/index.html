@@ -17,10 +17,18 @@
 </head>
 
 <body>
+  <!-- Selector de Temas -->
+  <div id="theme-selector-container" class="theme-selector">
+    <select id="theme-selector">
+      <option value="classic">🎨 Clásico</option>
+      <option value="dark">🌙 Oscuro</option>
+      <option value="retro">👾 Retro</option>
+    </select>
+  </div>
+
   <!-- Pantalla de Autenticación -->
   <div id="auth-screen" class="welcome-screen">
     <div class="welcome-content">
-      <!-- RUTA CORREGIDA -->
       <img src="images/logo.webp" alt="Ahorcado" width="150px" height="150px" />
       <h1>Ahorcado Interactivo</h1>
 
@@ -48,7 +56,6 @@
   <!-- Pantalla de Bienvenida (después del login) -->
   <div id="welcome-screen" class="welcome-screen hide">
     <div class="welcome-content">
-      <!-- RUTA CORREGIDA -->
       <img src="images/logo.webp" alt="Ahorcado" width="150px" height="150px" />
       <h1>Bienvenido, <span id="user-name">Usuario</span>!</h1>
       <p>¡Adivina la palabra antes de que sea demasiado tarde!🎯</p>

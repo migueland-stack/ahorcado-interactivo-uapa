@@ -1,4 +1,4 @@
-// Configuración de la API - CAMBIA ESTA URL POR LA DE TU BACKEND
+// Configuración de la API
 const API_URL = 'http://localhost:3000/api';
 
 // Referencias del sistema de autenticación
@@ -75,6 +75,48 @@ let options = {
   ]
 };
 
+// ==================== SISTEMA DE TEMAS ====================
+
+// Inicializar sistema de temas
+function initializeThemes() {
+  const themeSelector = document.getElementById('theme-selector');
+
+  // Cargar tema guardado
+  const savedTheme = localStorage.getItem('selectedTheme') || 'classic';
+  changeTheme(savedTheme);
+  themeSelector.value = savedTheme;
+
+  // Event listener para cambiar tema
+  themeSelector.addEventListener('change', (e) => {
+    changeTheme(e.target.value);
+  });
+}
+
+// Cambiar tema
+function changeTheme(themeName) {
+  document.documentElement.setAttribute('data-theme', themeName);
+  localStorage.setItem('selectedTheme', themeName);
+
+  // Actualizar color del canvas según el tema
+  updateCanvasColor(themeName);
+}
+
+// Actualizar color del canvas
+function updateCanvasColor(themeName) {
+  const canvas = document.getElementById('canvas');
+  const context = canvas.getContext('2d');
+
+  switch (themeName) {
+    case 'dark':
+      context.strokeStyle = '#ffffff';
+      break;
+    case 'retro':
+      context.strokeStyle = '#00ff00';
+      break;
+    default: // classic
+      context.strokeStyle = '#000000';
+  }
+}
 
 // ==================== SISTEMA DE AUTENTICACIÓN ====================
 
@@ -281,7 +323,7 @@ async function showLeaderboard() {
   });
 }
 
-// ==================== JUEGO ORIGINAL (MODIFICADO) ====================
+// ==================== JUEGO ORIGINAL ====================
 
 // Al hacer clic en el botón de inicio, ocultar la ventana de bienvenida y mostrar el juego
 document.getElementById("start-button").addEventListener("click", () => {
@@ -292,7 +334,7 @@ document.getElementById("start-button").addEventListener("click", () => {
 
 //Display option buttons
 const displayOptions = () => {
-  optionsContainer.innerHTML += `<h3>Selecciona una Opción:</h3>`;
+  optionsContainer.innerHTML = `<h3>Selecciona una Opción:</h3>`;
   let buttonCon = document.createElement("div");
   for (let value in options) {
     buttonCon.innerHTML += `<button class="options" onclick="generateWord('${value}')">${value}</button>`;
@@ -337,82 +379,24 @@ const generateWord = (optionValue) => {
   userInputSection.innerHTML = displayItem;
 };
 
-//Initial Function (Called when page loads/user presses new game)
-const initializer = () => {
-  winCount = 0;
-  count = 0;
-  currentGameScore = 0;
-  currentScore.textContent = "0";
-
-  userInputSection.innerHTML = "";
-  optionsContainer.innerHTML = "";
-  letterContainer.classList.add("hide");
-  newGameContainer.classList.add("hide");
-  letterContainer.innerHTML = "";
-
-  //Array with letters A-Z + Ñ
-  const lettersArray = [
-    "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M",
-    "N", "Ñ", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"
-  ];
-
-  lettersArray.forEach((letter) => {
-    let button = document.createElement("button");
-    button.classList.add("letters");
-    button.innerText = letter;
-
-    button.addEventListener("click", async () => {
-      let charArray = chosenWord.split("");
-      let dashes = document.getElementsByClassName("dashes");
-
-      if (charArray.includes(button.innerText)) {
-        charArray.forEach(async (char, index) => {
-          if (char === button.innerText) {
-            dashes[index].innerText = char;
-            winCount += 1;
-            if (winCount == charArray.length) {
-              currentGameScore = calculateScore(true, 6 - count, chosenWord.length);
-              scoreEarned.innerHTML = `¡Ganaste ${currentGameScore} puntos!`;
-              resultText.innerHTML = `<h2 class='win-msg'>¡Ganaste!</h2><p>La palabra era <span>${chosenWord}</span></p>`;
-
-              // Actualizar puntuación en el backend
-              if (userData) {
-                const updatedStats = await updateUserScore(currentGameScore);
-                if (updatedStats) {
-                  gamesWon.textContent = updatedStats.gamesWon;
-                  bestScore.textContent = updatedStats.bestScore;
-                }
-              }
-
-              blocker();
-            }
-          }
-        });
-      } else {
-        count += 1;
-        drawMan(count);
-        if (count == 6) {
-          resultText.innerHTML = `<h2 class='lose-msg'>¡Perdiste!</h2><p>La palabra era <span>${chosenWord}</span></p>`;
-          blocker();
-        }
-      }
-
-      button.disabled = true;
-    });
-
-    letterContainer.append(button);
-  });
-
-  displayOptions();
-  let { initialDrawing } = canvasCreator();
-  initialDrawing();
-};
-
-//Canvas
+// Canvas Creator con soporte para temas
 const canvasCreator = () => {
   let context = canvas.getContext("2d");
   context.beginPath();
-  context.strokeStyle = "#000";
+
+  // Usar el color del tema actual
+  const currentTheme = localStorage.getItem('selectedTheme') || 'classic';
+  switch (currentTheme) {
+    case 'dark':
+      context.strokeStyle = '#ffffff';
+      break;
+    case 'retro':
+      context.strokeStyle = '#00ff00';
+      break;
+    default:
+      context.strokeStyle = '#000000';
+  }
+
   context.lineWidth = 2;
 
   const drawLine = (fromX, fromY, toX, toY) => {
@@ -457,6 +441,78 @@ const drawMan = (count) => {
   }
 };
 
+//Initial Function (Called when page loads/user presses new game)
+const initializer = () => {
+  winCount = 0;
+  count = 0;
+  currentGameScore = 0;
+  currentScore.textContent = "0";
+
+  userInputSection.innerHTML = "";
+  optionsContainer.innerHTML = "";
+  letterContainer.classList.add("hide");
+  newGameContainer.classList.add("hide");
+  letterContainer.innerHTML = "";
+
+  //Array with letters A-Z + Ñ
+  const lettersArray = [
+    "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M",
+    "N", "Ñ", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"
+  ];
+
+  lettersArray.forEach((letter) => {
+    let button = document.createElement("button");
+    button.classList.add("letters");
+    button.innerText = letter;
+
+    button.addEventListener("click", async () => {
+      let charArray = chosenWord.split("");
+      let dashes = document.getElementsByClassName("dashes");
+
+      if (charArray.includes(button.innerText)) {
+        charArray.forEach((char, index) => {
+          if (char === button.innerText) {
+            dashes[index].innerText = char;
+            winCount += 1;
+            if (winCount == charArray.length) {
+              currentGameScore = calculateScore(true, 6 - count, chosenWord.length);
+              scoreEarned.innerHTML = `¡Ganaste ${currentGameScore} puntos!`;
+              resultText.innerHTML = `<h2 class='win-msg'>¡Ganaste!</h2><p>La palabra era <span>${chosenWord}</span></p>`;
+
+              // Actualizar puntuación en el backend
+              if (userData) {
+                updateUserScore(currentGameScore).then(updatedStats => {
+                  if (updatedStats) {
+                    gamesWon.textContent = updatedStats.gamesWon;
+                    bestScore.textContent = updatedStats.bestScore;
+                  }
+                });
+              }
+
+              blocker();
+            }
+          }
+        });
+      } else {
+        count += 1;
+        drawMan(count);
+        if (count == 6) {
+          resultText.innerHTML = `<h2 class='lose-msg'>¡Perdiste!</h2><p>La palabra era <span>${chosenWord}</span></p>`;
+          blocker();
+        }
+      }
+
+      button.disabled = true;
+    });
+
+    letterContainer.append(button);
+  });
+
+  displayOptions();
+  let { initialDrawing } = canvasCreator();
+  initialDrawing();
+};
+
 // Nuevo juego - volver a la pantalla de bienvenida
 newGameButton.addEventListener("click", () => {
   gameContainer.classList.add("hide");
@@ -464,8 +520,9 @@ newGameButton.addEventListener("click", () => {
   initializer();
 });
 
-// Inicializar verificando autenticación
+// Inicializar verificando autenticación y temas
 window.onload = () => {
+  initializeThemes(); // Inicializar sistema de temas
   if (!checkAuth()) {
     authScreen.classList.remove("hide");
   }
