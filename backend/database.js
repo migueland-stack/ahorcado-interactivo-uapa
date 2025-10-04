@@ -5,26 +5,77 @@ const dbPath = path.join(__dirname, 'ahorcado.db');
 const db = new sqlite3.Database(dbPath);
 
 // Inicializar tablas
-db.serialize(() => {
-  // Tabla de usuarios
-  db.run(`CREATE TABLE IF NOT EXISTS users (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    username TEXT UNIQUE,
-    email TEXT UNIQUE,
-    password TEXT,
-    created_at DATETIME DEFAULT CURRENT_TIMESTAMP
-  )`);
+function initializeDatabase() {
+  return new Promise((resolve, reject) => {
+    // Tabla de usuarios
+    db.run(`
+      CREATE TABLE IF NOT EXISTS users (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        username TEXT UNIQUE NOT NULL,
+        email TEXT UNIQUE NOT NULL,
+        password TEXT NOT NULL,
+        created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+      )
+    `, (err) => {
+      if (err) {
+        console.error('Error creando tabla users:', err);
+        reject(err);
+        return;
+      }
+      
+      // Tabla de puntuaciones
+      db.run(`
+        CREATE TABLE IF NOT EXISTS scores (
+          id INTEGER PRIMARY KEY AUTOINCREMENT,
+          user_id INTEGER,
+          score INTEGER NOT NULL,
+          games_won INTEGER DEFAULT 0,
+          best_score INTEGER DEFAULT 0,
+          created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+          FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+        )
+      `, (err) => {
+        if (err) {
+          console.error('Error creando tabla scores:', err);
+          reject(err);
+          return;
+        }
+        
+        console.log('Base de datos SQLite inicializada correctamente');
+        resolve();
+      });
+    });
+  });
+}
 
-  // Tabla de puntuaciones
-  db.run(`CREATE TABLE IF NOT EXISTS scores (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    user_id INTEGER,
-    score INTEGER,
-    games_won INTEGER DEFAULT 0,
-    best_score INTEGER DEFAULT 0,
-    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY(user_id) REFERENCES users(id)
-  )`);
-});
+// Funciones de base de datos para SQLite
+const dbMethods = {
+  get: (query, params = []) => {
+    return new Promise((resolve, reject) => {
+      db.get(query, params, (err, row) => {
+        if (err) reject(err);
+        else resolve(row);
+      });
+    });
+  },
+  
+  all: (query, params = []) => {
+    return new Promise((resolve, reject) => {
+      db.all(query, params, (err, rows) => {
+        if (err) reject(err);
+        else resolve(rows);
+      });
+    });
+  },
+  
+  run: (query, params = []) => {
+    return new Promise((resolve, reject) => {
+      db.run(query, params, function(err) {
+        if (err) reject(err);
+        else resolve({ insertId: this.lastID, changes: this.changes });
+      });
+    });
+  }
+};
 
-module.exports = db;
+module.exports = { db, initializeDatabase, ...dbMethods };
