@@ -51,6 +51,26 @@
   --game-shadow: 0 1.2em 2.4em rgba(0, 255, 0, 0.2);
 }
 
+/* Ajustes para tema oscuro */
+[data-theme="dark"] .win-animation {
+  animation: winCelebration 2s ease-out;
+}
+
+[data-theme="dark"] .lose-animation {
+  animation: loseShake 1s ease-in-out;
+}
+
+/* Ajustes para tema retro */
+[data-theme="retro"] .win-msg {
+  color: #00ff00;
+  text-shadow: 0 0 10px #00ff00;
+}
+
+[data-theme="retro"] .lose-msg {
+  color: #ff0000;
+  text-shadow: 0 0 10px #ff0000;
+}
+
 /* ===== ESTILOS GENERALES ===== */
 * {
   padding: 0;
@@ -299,6 +319,7 @@ body {
 }
 
 .container {
+  /* Mantener las propiedades existentes */
   font-size: 16px;
   background-color: var(--container-bg);
   width: 95vw;
@@ -313,6 +334,17 @@ body {
   border: 3px solid var(--border-color);
   max-height: 95vh;
   overflow-y: auto;
+
+  /* Nueva propiedad para asegurar el stacking context */
+  isolation: isolate;
+}
+
+/* Asegurar que las animaciones no afecten el posicionamiento */
+.win-animation,
+.lose-animation {
+  transform: translate(-50%, -50%) !important;
+  top: 50% !important;
+  left: 50% !important;
 }
 
 /* ===== OPCIONES DE JUEGO ===== */
@@ -632,6 +664,172 @@ canvas {
     max-width: 100px;
     font-size: 0.65rem;
   }
+}
+
+/* ==================== ANIMACIONES ==================== */
+
+/* Animación de victoria - Sin transform que afecte el posicionamiento */
+@keyframes winCelebration {
+  0% {
+    box-shadow: 0 0 0 0 rgba(76, 175, 80, 0.7),
+      0 0 0 0 rgba(76, 175, 80, 0.4);
+  }
+
+  50% {
+    box-shadow: 0 0 0 20px rgba(76, 175, 80, 0),
+      0 0 0 40px rgba(76, 175, 80, 0);
+  }
+
+  100% {
+    box-shadow: 0 0 0 0 rgba(76, 175, 80, 0),
+      0 0 0 0 rgba(76, 175, 80, 0);
+  }
+}
+
+@keyframes winPulse {
+
+  0%,
+  100% {
+    background-color: rgba(76, 175, 80, 0.1);
+    border-color: #4CAF50;
+  }
+
+  50% {
+    background-color: rgba(76, 175, 80, 0.3);
+    border-color: #45a049;
+  }
+}
+
+/* Animación de derrota - Sin transform que afecte el posicionamiento */
+@keyframes losePulse {
+
+  0%,
+  100% {
+    background-color: rgba(244, 67, 54, 0.1);
+    border-color: #f44336;
+  }
+
+  50% {
+    background-color: rgba(244, 67, 54, 0.3);
+    border-color: #e53935;
+  }
+}
+
+@keyframes confettiFall {
+  0% {
+    transform: translateY(-100px) rotate(0deg);
+    opacity: 1;
+  }
+
+  100% {
+    transform: translateY(100vh) rotate(360deg);
+    opacity: 0;
+  }
+}
+
+/* Clases de animación CORREGIDAS */
+.win-animation {
+  animation: winCelebration 2s ease-out;
+}
+
+.lose-animation {
+  animation: losePulse 1.5s ease-in-out;
+}
+
+.win-message-pulse {
+  animation: winPulse 1.5s ease-in-out 3;
+}
+
+.lose-message-pulse {
+  animation: losePulse 1.5s ease-in-out 3;
+}
+
+/* Efectos específicos para el canvas - SIN TRANSFORM */
+.canvas-celebration {
+  filter: drop-shadow(0 0 15px #4CAF50) brightness(1.1);
+  transition: all 0.5s ease;
+}
+
+.canvas-game-over {
+  filter: drop-shadow(0 0 15px #f44336) brightness(1.1);
+  transition: all 0.5s ease;
+}
+
+/* Animación para el contenido interno en lugar del contenedor principal */
+@keyframes contentPop {
+  0% {
+    transform: scale(0.95);
+    opacity: 0.8;
+  }
+
+  50% {
+    transform: scale(1.02);
+  }
+
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.win-content-animation {
+  animation: contentPop 0.6s ease-out;
+}
+
+.lose-content-animation {
+  animation: contentPop 0.4s ease-out;
+}
+
+.confetti {
+  position: fixed;
+  width: 10px;
+  height: 10px;
+  background-color: #ff0000;
+  opacity: 0;
+  pointer-events: none;
+  z-index: 1000;
+}
+
+/* Mejoras para los mensajes de resultado */
+.win-msg {
+  color: #4CAF50;
+  text-shadow: 0 0 10px rgba(76, 175, 80, 0.5);
+}
+
+.lose-msg {
+  color: #f44336;
+  text-shadow: 0 0 10px rgba(244, 67, 54, 0.5);
+}
+
+/* Animación para letras correctas */
+.letter-correct {
+  animation: letterPop 0.3s ease-out;
+}
+
+@keyframes letterPop {
+  0% {
+    transform: scale(0.8);
+    opacity: 0;
+  }
+
+  70% {
+    transform: scale(1.1);
+  }
+
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* Efecto para cuando se revela una letra */
+.dashes span {
+  transition: all 0.3s ease;
+}
+
+.dashes span.revealed {
+  color: #4CAF50;
+  transform: translateY(-5px);
 }
 
 /* ==================== MEDIA QUERIES ==================== */

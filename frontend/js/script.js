@@ -682,6 +682,8 @@ const initializer = () => {
       if (charArray.includes(button.innerText)) {
         charArray.forEach((char, index) => {
           if (char === button.innerText) {
+            // Animación para revelar letra
+            revealLetterAnimation(index);
             dashes[index].innerText = char;
             winCount += 1;
             if (winCount == charArray.length) {
@@ -693,6 +695,9 @@ const initializer = () => {
 
               // Reproducir sonido de victoria
               playSound(winSound);
+
+              // Trigger animación de victoria
+              triggerWinAnimation();
 
               // Actualizar estadísticas en el backend - VICTORIA
               if (userData) {
@@ -721,6 +726,9 @@ const initializer = () => {
 
           // Reproducir sonido de derrota
           playSound(loseSound);
+
+          // Trigger animación de derrota
+          triggerLoseAnimation();
 
           // Actualizar estadísticas en el backend - DERROTA
           if (userData) {
@@ -857,3 +865,116 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 });
+
+// ==================== SISTEMA DE ANIMACIONES ====================
+
+// Crear confeti para victoria
+function createConfetti() {
+  const colors = ['#ff0000', '#00ff00', '#0000ff', '#ffff00', '#ff00ff', '#00ffff'];
+  const container = document.body;
+  
+  for (let i = 0; i < 30; i++) { // Reducido a 30 para mejor rendimiento
+    const confetti = document.createElement('div');
+    confetti.className = 'confetti';
+    confetti.style.left = Math.random() * 100 + 'vw';
+    confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+    confetti.style.animation = `confettiFall ${Math.random() * 2 + 1}s linear forwards`;
+    confetti.style.animationDelay = Math.random() * 1 + 's';
+    
+    container.appendChild(confetti);
+    
+    // Remover después de la animación
+    setTimeout(() => {
+      if (confetti.parentNode) {
+        confetti.parentNode.removeChild(confetti);
+      }
+    }, 3000);
+  }
+}
+
+// Animación de victoria CORREGIDA
+function triggerWinAnimation() {
+  const resultText = document.getElementById('result-text');
+  const canvas = document.getElementById('canvas');
+  const userInputSection = document.getElementById('user-input-section');
+  
+  // Animación solo de efectos visuales (sin transform)
+  document.querySelector('.container').classList.add('win-animation');
+  
+  // Efecto en el canvas
+  canvas.classList.add('canvas-celebration');
+  
+  // Efecto en el mensaje
+  const winMessage = resultText.querySelector('.win-msg');
+  if (winMessage) {
+    winMessage.classList.add('win-message-pulse');
+  }
+  
+  // Animación suave del contenido
+  resultText.classList.add('win-content-animation');
+  userInputSection.classList.add('win-content-animation');
+  
+  // Confeti
+  createConfetti();
+  
+  // Remover animaciones después de completarse
+  setTimeout(() => {
+    document.querySelector('.container').classList.remove('win-animation');
+    canvas.classList.remove('canvas-celebration');
+    if (winMessage) {
+      winMessage.classList.remove('win-message-pulse');
+    }
+    resultText.classList.remove('win-content-animation');
+    userInputSection.classList.remove('win-content-animation');
+  }, 2000);
+}
+
+// Animación de derrota CORREGIDA
+function triggerLoseAnimation() {
+  const resultText = document.getElementById('result-text');
+  const canvas = document.getElementById('canvas');
+  const userInputSection = document.getElementById('user-input-section');
+  
+  // Animación solo de efectos visuales (sin transform que mueva el contenedor)
+  document.querySelector('.container').classList.add('lose-animation');
+  
+  // Efecto en el canvas
+  canvas.classList.add('canvas-game-over');
+  
+  // Efecto en el mensaje
+  const loseMessage = resultText.querySelector('.lose-msg');
+  if (loseMessage) {
+    loseMessage.classList.add('lose-message-pulse');
+  }
+  
+  // Animación suave del contenido
+  resultText.classList.add('lose-content-animation');
+  userInputSection.classList.add('lose-content-animation');
+  
+  // Remover animaciones después de completarse
+  setTimeout(() => {
+    document.querySelector('.container').classList.remove('lose-animation');
+    canvas.classList.remove('canvas-game-over');
+    if (loseMessage) {
+      loseMessage.classList.remove('lose-message-pulse');
+    }
+    resultText.classList.remove('lose-content-animation');
+    userInputSection.classList.remove('lose-content-animation');
+  }, 1500);
+}
+
+// Animación para letras correctas (sin cambios)
+function triggerLetterAnimation(letterElement) {
+  letterElement.classList.add('letter-correct');
+  setTimeout(() => {
+    letterElement.classList.remove('letter-correct');
+  }, 300);
+}
+
+// Animación para revelar letras en la palabra (sin cambios)
+function revealLetterAnimation(index) {
+  const dashes = document.getElementsByClassName('dashes');
+  if (dashes[index]) {
+    dashes[index].classList.add('revealed');
+  }
+}
