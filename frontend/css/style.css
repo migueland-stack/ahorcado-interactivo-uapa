@@ -61,7 +61,8 @@
 }
 
 html {
-  font-size: 14px; /* Base para móviles */
+  font-size: 14px;
+  /* Base para móviles */
 }
 
 body {
@@ -257,6 +258,46 @@ body {
 }
 
 /* ===== JUEGO PRINCIPAL ===== */
+
+/* Controles de volumen */
+.volume-control {
+  position: fixed;
+  top: 60px;
+  right: 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: rgba(255, 255, 255, 0.9);
+  padding: 10px;
+  border-radius: 25px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+}
+
+#volume-toggle {
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  padding: 5px;
+}
+
+#volume-slider {
+  width: 80px;
+  cursor: pointer;
+}
+
+/* Asegurar que los controles sean visibles en todos los temas */
+[data-theme="dark"] .volume-control {
+  background: rgba(51, 51, 51, 0.9);
+  color: white;
+}
+
+[data-theme="retro"] .volume-control {
+  background: rgba(0, 0, 0, 0.9);
+  border: 2px solid #00ff00;
+}
+
 .container {
   font-size: 16px;
   background-color: var(--container-bg);
@@ -570,12 +611,12 @@ canvas {
     top: 10px;
     right: 10px;
   }
-  
+
   .difficulty-selector {
     top: 10px;
     left: 10px;
   }
-  
+
   #theme-selector,
   #difficulty-selector {
     font-size: 0.7rem;
@@ -585,6 +626,7 @@ canvas {
 }
 
 @media (max-width: 360px) {
+
   #theme-selector,
   #difficulty-selector {
     max-width: 100px;
@@ -599,20 +641,20 @@ canvas {
   html {
     font-size: 15px;
   }
-  
+
   .welcome-content {
     padding: 2rem;
   }
-  
+
   .container {
     padding: 2em;
   }
-  
+
   #letter-container button {
     height: 2.6em;
     width: 2.6em;
   }
-  
+
   .game-header {
     font-size: 1rem;
   }
@@ -623,16 +665,16 @@ canvas {
   html {
     font-size: 16px;
   }
-  
+
   .welcome-content {
     max-width: 500px;
   }
-  
+
   .container {
     max-width: 34em;
     padding: 3em;
   }
-  
+
   #letter-container button {
     height: 2.4em;
     width: 2.4em;
@@ -644,7 +686,7 @@ canvas {
   .welcome-content {
     max-width: 500px;
   }
-  
+
   .container {
     max-width: 34em;
   }
@@ -655,71 +697,71 @@ canvas {
   html {
     font-size: 13px;
   }
-  
+
   .theme-selector {
     top: 10px;
     right: 10px;
   }
-  
+
   #theme-selector {
     font-size: 0.7rem;
     padding: 6px 8px;
     max-width: 100px;
   }
-  
+
   .welcome-content {
     padding: 1rem;
     margin: 10px;
   }
-  
+
   .welcome-content h1 {
     font-size: 1.6rem;
   }
-  
+
   .welcome-content img {
     max-width: 100px;
   }
-  
+
   .container {
     padding: 1em;
     width: 98vw;
   }
-  
+
   #options-container button {
     min-width: 80px;
     padding: 0.6em 0.8em;
     font-size: 0.8rem;
   }
-  
+
   #letter-container button {
     height: 2.5em;
     width: 2.5em;
     font-size: 0.9rem;
   }
-  
+
   .game-header {
     flex-direction: column;
     text-align: center;
     gap: 0.3rem;
   }
-  
+
   #user-input-section {
     font-size: 1.2em;
   }
-  
+
   .dashes {
     font-size: 1em;
     min-width: 1em;
   }
-  
+
   .user-stats {
     gap: 0.5rem;
   }
-  
+
   .stat {
     min-width: 100px;
   }
-  
+
   .stat span {
     font-size: 1.1rem;
   }
@@ -730,24 +772,24 @@ canvas {
   html {
     font-size: 12px;
   }
-  
+
   #letter-container button {
     height: 2.2em;
     width: 2.2em;
     font-size: 0.8rem;
   }
-  
+
   #options-container button {
     min-width: 70px;
     font-size: 0.7rem;
     padding: 0.5em 0.6em;
   }
-  
+
   .welcome-buttons button {
     padding: 12px 16px;
     font-size: 0.9rem;
   }
-  
+
   .stat {
     min-width: 80px;
   }
@@ -759,28 +801,28 @@ canvas {
     padding: 10px;
     align-items: flex-start;
   }
-  
+
   .welcome-content {
     margin: 10px 0;
     max-height: 90vh;
     overflow-y: auto;
   }
-  
+
   .container {
     max-height: 90vh;
     overflow-y: auto;
     top: 45%;
   }
-  
+
   .user-stats {
     margin: 1rem 0;
   }
-  
+
   .welcome-content h1 {
     font-size: 1.5rem;
     margin-bottom: 0.5rem;
   }
-  
+
   .welcome-content p {
     margin-bottom: 1rem;
   }
@@ -791,11 +833,11 @@ canvas {
   .welcome-content {
     max-width: 600px;
   }
-  
+
   .welcome-content h1 {
     font-size: 2.2rem;
   }
-  
+
   .welcome-content p {
     font-size: 1rem;
   }
@@ -803,13 +845,14 @@ canvas {
 
 /* Soporte para touch devices */
 @media (hover: none) and (pointer: coarse) {
+
   #letter-container button:hover,
   #options-container button:hover,
   .welcome-buttons button:hover,
   #auth-screen button:hover {
     transform: none;
   }
-  
+
   #letter-container button:active,
   #options-container button:active,
   .welcome-buttons button:active,

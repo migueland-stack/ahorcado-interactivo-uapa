@@ -25,19 +25,19 @@ function initializeDatabase() {
 
       // Tabla de puntuaciones - ACTUALIZADA CON NUEVOS CAMPOS
       db.run(`
-        CREATE TABLE IF NOT EXISTS scores (
-          id INTEGER PRIMARY KEY AUTOINCREMENT,
-          user_id INTEGER,
-          score INTEGER NOT NULL,
-          games_won INTEGER DEFAULT 0,
-          games_lost INTEGER DEFAULT 0,
-          current_streak INTEGER DEFAULT 0,
-          max_streak INTEGER DEFAULT 0,
-          best_score INTEGER DEFAULT 0,
-          created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-          FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
-        )
-      `, (err) => {
+    CREATE TABLE IF NOT EXISTS scores (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        user_id INTEGER,
+        score INTEGER DEFAULT 0 NOT NULL,
+        games_won INTEGER DEFAULT 0,
+        games_lost INTEGER DEFAULT 0,
+        current_streak INTEGER DEFAULT 0,
+        max_streak INTEGER DEFAULT 0,
+        best_score INTEGER DEFAULT 0,
+        created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+        FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+    )
+`, (err) => {
         if (err) {
           console.error('Error creando tabla scores:', err);
           reject(err);

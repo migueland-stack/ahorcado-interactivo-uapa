@@ -131,6 +131,17 @@
       <button id="new-game-button">Nuevo Juego</button>
     </div>
   </div>
+  <!-- Elementos de audio ocultos -->
+  <audio id="win-sound" src="/sounds/win.mp3" preload="auto"></audio>
+  <audio id="lose-sound" src="/sounds/lose.mp3" preload="auto"></audio>
+  <!-- <audio id="drawing-sound" src="/sounds/drawing.mp3" preload="auto"></audio>-->
+  <audio id="click-sound" src="/sounds/click.mp3" preload="auto"></audio>
+
+  <!-- Control de volumen -->
+  <div id="volume-control" class="volume-control">
+    <button id="volume-toggle">🔊</button>
+    <input type="range" id="volume-slider" min="0" max="1" step="0.1" value="0.5">
+  </div>
 
   <!-- SCRIPT CORREGIDO -->
   <script src="/js/script.js"></script>

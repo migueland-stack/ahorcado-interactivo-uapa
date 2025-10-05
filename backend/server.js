@@ -25,6 +25,7 @@ app.use(express.static(path.join(__dirname, '../frontend')));
 app.use('/css', express.static(path.join(__dirname, '../frontend/css')));
 app.use('/js', express.static(path.join(__dirname, '../frontend/js')));
 app.use('/images', express.static(path.join(__dirname, '../frontend/images')));
+app.use('/sounds', express.static(path.join(__dirname, '../frontend/sounds')));
 
 // Rutas API
 app.use('/api/auth', authRoutes);
@@ -33,21 +34,21 @@ app.use('/api/scores', scoresRoutes);
 // Ruta para verificar archivos estáticos
 app.get('/debug-files', (req, res) => {
   const fs = require('fs');
-  
+
   const files = {
     css: fs.existsSync(path.join(__dirname, '../frontend/css/style.css')),
     js: fs.existsSync(path.join(__dirname, '../frontend/js/script.js')),
     images: fs.existsSync(path.join(__dirname, '../frontend/images/logo.webp')),
     html: fs.existsSync(path.join(__dirname, '../frontend/index.html'))
   };
-  
+
   res.json({
     message: 'Verificación de archivos',
     basePath: path.join(__dirname, '../frontend'),
     files: files,
     routes: {
       css: '/css/style.css',
-      js: '/js/script.js', 
+      js: '/js/script.js',
       images: '/images/logo.webp'
     }
   });
@@ -55,8 +56,8 @@ app.get('/debug-files', (req, res) => {
 
 // Ruta de prueba del API
 app.get('/api/test', (req, res) => {
-  res.json({ 
-    message: '✅ Backend funcionando correctamente', 
+  res.json({
+    message: '✅ Backend funcionando correctamente',
     status: 'OK',
     timestamp: new Date().toISOString()
   });
@@ -77,7 +78,7 @@ async function startServer() {
   try {
     // Inicializar base de datos
     await initializeDatabase();
-    
+
     app.listen(PORT, () => {
       console.log(`\n✅ Servidor backend corriendo en http://localhost:${PORT}`);
       console.log(`📁 Frontend servido desde: ${path.join(__dirname, '../frontend')}`);

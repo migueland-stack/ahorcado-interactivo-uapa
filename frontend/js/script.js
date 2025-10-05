@@ -671,7 +671,11 @@ const initializer = () => {
     button.classList.add("letters");
     button.innerText = letter;
 
-    button.addEventListener("click", async () => {
+    button.addEventListener('click', async () => {
+
+      // Reproducir sonido de click
+      playSound(clickSound);
+
       let charArray = chosenWord.split("");
       let dashes = document.getElementsByClassName("dashes");
 
@@ -687,22 +691,18 @@ const initializer = () => {
               difficultyBonusInfo.innerHTML = `Bonus dificultad: ${getDifficultyBonusText(currentDifficultyLevel)}`;
               resultText.innerHTML = `<h2 class='win-msg'>¡Ganaste!</h2><p>La palabra era <span>${chosenWord}</span></p>`;
 
+              // Reproducir sonido de victoria
+              playSound(winSound);
+
               // Actualizar estadísticas en el backend - VICTORIA
               if (userData) {
                 updateUserScore(currentGameScore, 'win').then(updatedStats => {
                   if (updatedStats) {
                     gamesWon.textContent = updatedStats.gamesWon;
                     bestScore.textContent = updatedStats.bestScore;
-                    // Actualizar nuevos campos si existen en el DOM
-                    if (document.getElementById('games-lost')) {
-                      document.getElementById('games-lost').textContent = updatedStats.gamesLost;
-                    }
-                    if (document.getElementById('current-streak')) {
-                      document.getElementById('current-streak').textContent = updatedStats.currentStreak;
-                    }
-                    if (document.getElementById('max-streak')) {
-                      document.getElementById('max-streak').textContent = updatedStats.maxStreak;
-                    }
+                    document.getElementById('games-lost').textContent = updatedStats.gamesLost;
+                    document.getElementById('current-streak').textContent = updatedStats.currentStreak;
+                    document.getElementById('max-streak').textContent = updatedStats.maxStreak;
                   }
                 });
               }
@@ -719,7 +719,10 @@ const initializer = () => {
           resultText.innerHTML = `<h2 class='lose-msg'>¡Perdiste!</h2><p>La palabra era <span>${chosenWord}</span></p>`;
           difficultyBonusInfo.innerHTML = "";
 
-          // Actualizar estadísticas en el backend - DERROTA (score explícitamente 0)
+          // Reproducir sonido de derrota
+          playSound(loseSound);
+
+          // Actualizar estadísticas en el backend - DERROTA
           if (userData) {
             updateUserScore(0, 'lose').then(updatedStats => {
               if (updatedStats) {
@@ -756,9 +759,101 @@ newGameButton.addEventListener("click", () => {
 
 // Inicializar verificando autenticación, temas y dificultad
 window.onload = () => {
-  initializeThemes(); // Inicializar sistema de temas
-  initializeDifficulty(); // Inicializar sistema de dificultad
+  initializeThemes();
+  initializeDifficulty();
+  initializeSounds();
   if (!checkAuth()) {
     authScreen.classList.remove("hide");
   }
 };
+
+// Sistema de sonidos
+let soundEnabled = true;
+let volumeLevel = 0.5;
+
+// Referencias a elementos de audio
+const winSound = document.getElementById('win-sound');
+const loseSound = document.getElementById('lose-sound');
+//const drawingSound = document.getElementById('drawing-sound');
+const clickSound = document.getElementById('click-sound');
+
+// Inicializar sistema de sonidos
+function initializeSounds() {
+  const savedSoundSetting = localStorage.getItem('soundEnabled');
+  const savedVolume = localStorage.getItem('volumeLevel');
+
+  if (savedSoundSetting !== null) {
+    soundEnabled = savedSoundSetting === 'true';
+  }
+  if (savedVolume !== null) {
+    volumeLevel = parseFloat(savedVolume);
+  }
+
+  // Configurar volumen inicial
+  updateVolume();
+  updateVolumeUI();
+}
+
+// Actualizar volumen de todos los sonidos
+function updateVolume() {
+  const sounds = [winSound, loseSound, drawingSound, clickSound];
+  sounds.forEach(sound => {
+    if (sound) {
+      sound.volume = volumeLevel;
+    }
+  });
+}
+
+// Actualizar interfaz de volumen
+function updateVolumeUI() {
+  const volumeToggle = document.getElementById('volume-toggle');
+  const volumeSlider = document.getElementById('volume-slider');
+
+  if (volumeToggle) {
+    volumeToggle.textContent = soundEnabled ? '🔊' : '🔇';
+  }
+  if (volumeSlider) {
+    volumeSlider.value = volumeLevel;
+    volumeSlider.style.display = soundEnabled ? 'block' : 'none';
+  }
+}
+
+// Reproducir sonido
+function playSound(soundElement) {
+  if (!soundEnabled || !soundElement) return;
+
+  soundElement.currentTime = 0;
+  soundElement.play().catch(e => {
+    console.log('Error reproduciendo sonido:', e);
+  });
+}
+
+// Alternar sonido on/off
+function toggleSound() {
+  soundEnabled = !soundEnabled;
+  localStorage.setItem('soundEnabled', soundEnabled.toString());
+  updateVolumeUI();
+}
+
+// Cambiar volumen
+function changeVolume(value) {
+  volumeLevel = parseFloat(value);
+  localStorage.setItem('volumeLevel', volumeLevel.toString());
+  updateVolume();
+}
+
+// Event listeners para controles de volumen
+document.addEventListener('DOMContentLoaded', function () {
+  const volumeToggle = document.getElementById('volume-toggle');
+  const volumeSlider = document.getElementById('volume-slider');
+
+  if (volumeToggle) {
+    volumeToggle.addEventListener('click', toggleSound);
+  }
+
+  if (volumeSlider) {
+    volumeSlider.addEventListener('input', (e) => {
+      changeVolume(e.target.value);
+    });
+  }
+});
