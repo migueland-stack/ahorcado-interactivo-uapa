@@ -14,6 +14,10 @@ const currentUser = document.getElementById("current-user");
 const currentScore = document.getElementById("current-score");
 const scoreEarned = document.getElementById("score-earned");
 const scoresList = document.getElementById("scores-list");
+const currentDifficulty = document.getElementById("current-difficulty");
+const difficultyBonus = document.getElementById("difficulty-bonus");
+const gameDifficulty = document.getElementById("game-difficulty");
+const difficultyBonusInfo = document.getElementById("difficulty-bonus-info");
 
 // Referencias originales del juego
 const letterContainer = document.getElementById("letter-container");
@@ -31,49 +35,210 @@ let currentGameScore = 0;
 let winCount = 0;
 let count = 0;
 let chosenWord = "";
+let currentDifficultyLevel = 'intermedio';
+let isGameActive = false;
 
-// Options values for buttons
-let options = {
-  Frutas: [
-    "Manzana", "Arandano", "Mandarina", "Piña", "Granada", "Sandia",
-    "Platano", "Mango", "Fresa", "Kiwi", "Papaya", "Cereza",
-    "Melocoton", "Uva", "Melon", "Pera", "Guayaba", "Tamarindo",
-    "Naranja", "Limon", "Frambuesa", "Coco", "Maracuya", "Higo"
-  ],
-  Animales: [
-    "Erizo", "Rinoceronte", "Ardilla", "Pantera", "Morsa", "Cebra",
-    "Elefante", "Jirafa", "Tigre", "Oso", "Lobo", "Delfin",
-    "Gato", "Perro", "Caballo", "Camello", "Pinguino", "Gorila",
-    "Zorro", "Ballena", "Koala", "Leopardo", "Canguro", "Buho"
-  ],
-  Paises: [
-    "India", "Hungria", "Kirguistan", "Suiza", "Zimbabue", "Dominica",
-    "España", "Mexico", "Argentina", "Japon", "Australia", "Canada",
-    "Chile", "Colombia", "Peru", "Italia", "Francia", "Alemania",
-    "China", "Corea", "Noruega", "Grecia", "Portugal", "Egipto"
-  ],
-  Colores: [
-    "Rojo", "Azul", "Verde", "Amarillo", "Rosa", "Negro",
-    "Blanco", "Gris", "Marron", "Naranja", "Violeta", "Turquesa",
-    "Beige", "Celeste", "Dorado", "Plateado", "Magenta", "Cian"
-  ],
-  Comidas: [
-    "Pizza", "Hamburguesa", "Sushi", "Taco", "Empanada", "Arepa",
-    "Paella", "Pasta", "Ensalada", "Ceviche", "Burrito", "Hotdog",
-    "Lasaña", "Croqueta", "Sopa", "Tortilla", "Tamales", "Gazpacho"
-  ],
-  Profesiones: [
-    "Doctor", "Ingeniero", "Maestro", "Policia", "Bombero", "Carpintero",
-    "Panadero", "Electricista", "Mecanico", "Arquitecto", "Abogado", "Enfermero",
-    "Cantante", "Actor", "Pintor", "Cocinero", "Programador", "Diseñador"
-  ],
-  Ciudades: [
-    "Madrid", "Barcelona", "Buenos Aires", "Lima", "Bogota", "Caracas",
-    "Santo Domingo", "Ciudad de Mexico", "Montevideo", "Quito", "La Paz", "Santiago",
-    "Paris", "Roma", "Berlin", "Londres", "Tokio", "Seul",
-    "Toronto", "Nueva York", "Los Angeles", "Sydney", "Lisboa", "Atenas"
-  ]
+// Sistema de dificultad - Palabras organizadas por dificultad (EXPANDIDAS)
+const optionsByDifficulty = {
+  facil: {
+    Frutas: [
+      "Manzana", "Pera", "Uva", "Kiwi", "Fresa", "Mango", "Limon", "Melon",
+      "Coco", "Ciruela", "Higo", "Dátil", "Guinda", "Cereza", "Níspero",
+      "Grosella", "Membrillo", "Nectarina", "Albaricoque", "Mora", "Frambuesa",
+      "Arándano", "Zarzamora", "Aguacate", "Chirimoya", "Granada", "Higo"
+    ],
+    Colores: [
+      "Rojo", "Azul", "Verde", "Rosa", "Gris", "Negro", "Blanco", "Beige",
+      "Oro", "Naranja", "Lila", "Cyan", "Marron", "Bordo", "Celeste",
+      "Turquesa", "Magenta", "Violeta", "Carmesí", "Amarillo", "Índigo",
+      "Esmeralda", "AzulMarino", "VerdeLima", "Salmón", "Caqui", "Lavanda"
+    ],
+    Animales: [
+      "Gato", "Perro", "Pato", "Oso", "Lobo", "Zorro", "Pez", "Rana",
+      "Loro", "Conejo", "Cabra", "Vaca", "Pollo", "Raton", "Tigre",
+      "León", "Mono", "Elefante", "Jirafa", "Cebra", "Caballo", "Oveja",
+      "Cerdo", "Gallina", "Pavo", "Pingüino", "Delfín", "Ballena", "Tiburón"
+    ],
+    Comidas: [
+      "Pizza", "Taco", "Sopa", "Arroz", "Pasta", "Pan", "Queso", "Leche",
+      "Huevo", "Carne", "Pescado", "Fruta", "Verdura", "Jugo", "Agua",
+      "Yogur", "Miel", "Mantequilla", "Galleta", "Pastel", "Helado", "Chocolate",
+      "Café", "Té", "Panqueque", "Waffle", "Ensalada", "Sándwich", "Hamburguesa"
+    ],
+    Familia: [
+      "Padre", "Madre", "Hijo", "Hija", "Abuelo", "Abuela", "Tío", "Tía",
+      "Primo", "Prima", "Hermano", "Hermana", "Sobrino", "Sobrina", "Nieto",
+      "Nieta", "Esposo", "Esposa", "Novio", "Novia", "Amigo", "Amiga"
+    ]
+  },
+  intermedio: {
+    Frutas: [
+      "Manzana", "Arandano", "Mandarina", "Piña", "Granada", "Sandia",
+      "Platano", "Mango", "Fresa", "Kiwi", "Papaya", "Cereza",
+      "Melocoton", "Uva", "Melon", "Pera", "Guayaba", "Tamarindo",
+      "Naranja", "Limon", "Frambuesa", "Coco", "Maracuya", "Higo",
+      "Guayaba", "Litchi", "Rambután", "Carambola", "Durian", "Mangostán",
+      "Pitahaya", "Kumquat", "Pomelo", "Lima", "Caimito", "Zapote"
+    ],
+    Animales: [
+      "Erizo", "Rinoceronte", "Ardilla", "Pantera", "Morsa", "Cebra",
+      "Elefante", "Jirafa", "Tigre", "Oso", "Lobo", "Delfin",
+      "Gato", "Perro", "Caballo", "Camello", "Pinguino", "Gorila",
+      "Zorro", "Ballena", "Koala", "Leopardo", "Canguro", "Buho",
+      "Hipopótamo", "Cocodrilo", "Serpiente", "Lagarto", "Tortuga", "Camaleón",
+      "Águila", "Halcón", "Búho", "Colibrí", "Flamenco", "PavoReal",
+      "Pulpo", "Calamar", "Medusa", "Estrella", "Erizo", "Cangrejo"
+    ],
+    Colores: [
+      "Rojo", "Azul", "Verde", "Amarillo", "Rosa", "Negro",
+      "Blanco", "Gris", "Marron", "Naranja", "Violeta", "Turquesa",
+      "Beige", "Celeste", "Dorado", "Plateado", "Magenta", "Cian",
+      "Carmesí", "Escarlata", "Granate", "Púrpura", "Lavanda", "Malva",
+      "Ocre", "Canela", "Chocolate", "Ébano", "Marfil", "Perla"
+    ],
+    Comidas: [
+      "Pizza", "Hamburguesa", "Sushi", "Taco", "Empanada", "Arepa",
+      "Paella", "Pasta", "Ensalada", "Ceviche", "Burrito", "Hotdog",
+      "Lasaña", "Croqueta", "Sopa", "Tortilla", "Tamales", "Gazpacho",
+      "Risotto", "Falafel", "Hummus", "Guacamole", "Ratatouille", "Borscht",
+      "Goulash", "Curry", "Biryani", "Pho", "Ramen", "Tagine"
+    ],
+    Profesiones: [
+      "Doctor", "Ingeniero", "Maestro", "Policia", "Bombero", "Carpintero",
+      "Panadero", "Electricista", "Mecanico", "Arquitecto", "Abogado", "Enfermero",
+      "Científico", "Investigador", "Programador", "Diseñador", "Artista", "Músico",
+      "Escritor", "Periodista", "Fotógrafo", "Cocinero", "Agricultor", "Pescador",
+      "Piloto", "Conductor", "Vendedor", "Gerente", "Contador", "Economista"
+    ],
+    Deportes: [
+      "Fútbol", "Baloncesto", "Tenis", "Natación", "Ciclismo", "Atletismo",
+      "Boxeo", "Judo", "Karate", "Esgrima", "Gimnasia", "Voleibol",
+      "Rugby", "Hockey", "Golf", "Béisbol", "Críquet", "Bádminton",
+      "Pádel", "Squash", "Surf", "Snowboard", "Esquí", "Escalada"
+    ]
+  },
+  dificil: {
+    Paises: [
+      "Kirguistan", "Zimbabue", "Dominica", "Argentina", "Australia",
+      "Mozambique", "Turkmenistan", "Madagascar", "Guatemala", "Venezuela",
+      "Kazajistan", "Azerbaiyan", "Bangladesh", "Turkmenistan", "Uzbekistan",
+      "Tayikistan", "Kuwait", "Qatar", "Baréin", "EmiratosÁrabes", "Omán",
+      "Bután", "Nepal", "SriLanka", "Maldivas", "TimorOriental", "PapúaNuevaGuinea",
+      "Micronesia", "Palaos", "Vanuatu", "Tuvalu", "Kiribati", "Nauru", "Samoa"
+    ],
+    Ciudades: [
+      "Barcelona", "Montevideo", "Estocolmo", "Yakarta", "Melbourne",
+      "BuenosAires", "Johannesburgo", "Philadelphia", "SanPetersburgo",
+      "Guadalajara", "Cartagena", "Valparaíso", "Mendoza", "Salvador",
+      "Recife", "Fortaleza", "Manila", "Bangkok", "Seúl", "Osaka",
+      "Yokohama", "Nagoya", "Sapporo", "Kioto", "Busán", "Incheon",
+      "Calcuta", "Chennai", "Bangalore", "Hyderabad", "Ahmedabad"
+    ],
+    Profesiones: [
+      "Arquitecto", "Ingeniero", "Programador", "Electricista", "Neurocirujano",
+      "Astrofisico", "Bioquimico", "Psicologo", "Sociologo", "Antropologo",
+      "Geologo", "Meteorologo", "Oceanografo", "Sismologo", "Volcanologo",
+      "Paleontólogo", "Arqueólogo", "Lingüista", "Filósofo", "Teólogo",
+      "Cardiólogo", "Neurólogo", "Oncólogo", "Pediatra", "Ginecólogo",
+      "Traumatólogo", "Dermatólogo", "Oftalmólogo", "Otorrinolaringólogo"
+    ],
+    Animales: [
+      "Ornitorrinco", "Armadillo", "Cangrejo", "Medusa", "Pulpo",
+      "Calamar", "Estrella", "Erizo", "Anemonas", "Coral",
+      "Almeja", "Mejillon", "Ostra", "Vieira", "Nautilo",
+      "Ajolote", "Quimera", "Celacanto", "Tuatara", "Komodo",
+      "Pangolín", "Okapi", "Narval", "Mantis", "Avestruz",
+      "Cóndor", "Albatros", "Pelícano", "Fragata", "Cormorán"
+    ],
+    Ciencia: [
+      "Telescopio", "Microscopio", "Termómetro", "Barómetro", "Hidrómetro",
+      "Acelerador", "Colisionador", "Espectrómetro", "Cromatógrafo", "Centrífuga",
+      "Autoclave", "Incubadora", "Pipeta", "Bureta", "Matraz", "Probeta",
+      "Crisol", "Mortero", "Embudo", "VidrioReloj", "Portaobjetos", "Cubeta",
+      "Electrodo", "Transistor", "Diodo", "Resistor", "Condensador", "Inductor"
+    ],
+    Literatura: [
+      "Quijote", "MobyDick", "Ulises", "Orgullo", "Prejuicio", "Cumbres",
+      "Borroscas", "Rayuela", "CienAños", "Soledad", "Niebla", "Plenilunio",
+      "Alicia", "Wonderland", "Oz", "Neverland", "Narnia", "TierraMedia",
+      "Westeros", "Poniente", "Hogwarts", "Howgarts", "Atlántida", "Avalon",
+      "Camelot", "ShangriLa", "ElDorado", "Lemuria", "Hiperbórea"
+    ]
+  }
 };
+
+// Multiplicadores de puntuación por dificultad
+const difficultyMultipliers = {
+  facil: 1.0,      // 0% bonus
+  intermedio: 1.5, // 50% bonus
+  dificil: 2.0     // 100% bonus
+};
+
+// ==================== SISTEMA DE DIFICULTAD ====================
+
+// Inicializar sistema de dificultad
+function initializeDifficulty() {
+  const difficultySelector = document.getElementById('difficulty-selector');
+
+  // Cargar dificultad guardada
+  const savedDifficulty = localStorage.getItem('selectedDifficulty') || 'intermedio';
+  changeDifficulty(savedDifficulty);
+  difficultySelector.value = savedDifficulty;
+
+  // Event listener para cambiar dificultad
+  difficultySelector.addEventListener('change', (e) => {
+    if (!isGameActive) {
+      changeDifficulty(e.target.value);
+    }
+  });
+}
+
+// Cambiar dificultad
+function changeDifficulty(difficulty) {
+  currentDifficultyLevel = difficulty;
+  localStorage.setItem('selectedDifficulty', difficulty);
+
+  // Actualizar interfaz
+  updateDifficultyUI(difficulty);
+}
+
+// Actualizar interfaz de dificultad
+function updateDifficultyUI(difficulty) {
+  const difficultyNames = {
+    facil: 'Fácil',
+    intermedio: 'Intermedio',
+    dificil: 'Difícil'
+  };
+
+  const bonusPercentages = {
+    facil: '+0%',
+    intermedio: '+50%',
+    dificil: '+100%'
+  };
+
+  currentDifficulty.textContent = difficultyNames[difficulty];
+  difficultyBonus.textContent = bonusPercentages[difficulty];
+  gameDifficulty.textContent = difficultyNames[difficulty];
+}
+
+// Obtener opciones según la dificultad actual
+function getOptionsForCurrentDifficulty() {
+  return optionsByDifficulty[currentDifficultyLevel] || optionsByDifficulty.intermedio;
+}
+
+// Controlar estado del selector de dificultad
+function setDifficultySelectorEnabled(enabled) {
+  const difficultySelector = document.getElementById('difficulty-selector');
+  difficultySelector.disabled = !enabled;
+
+  if (!enabled) {
+    difficultySelector.style.opacity = '0.6';
+    difficultySelector.style.cursor = 'not-allowed';
+  } else {
+    difficultySelector.style.opacity = '1';
+    difficultySelector.style.cursor = 'pointer';
+  }
+}
 
 // ==================== SISTEMA DE TEMAS ====================
 
@@ -287,13 +452,27 @@ function checkAuth() {
 
 // ==================== SISTEMA DE PUNTUACIONES ====================
 
-function calculateScore(isWin, attemptsLeft, wordLength) {
+function calculateScore(isWin, attemptsLeft, wordLength, difficulty) {
   if (!isWin) return 0;
 
   let score = 100; // Puntos base por ganar
   score += attemptsLeft * 20; // Puntos por intentos restantes
   score += wordLength * 10; // Puntos por longitud de palabra
+
+  // Aplicar multiplicador de dificultad
+  const multiplier = difficultyMultipliers[difficulty] || 1;
+  score = Math.floor(score * multiplier);
+
   return score;
+}
+
+function getDifficultyBonusText(difficulty) {
+  const bonuses = {
+    facil: "",
+    intermedio: " (+50% bonus dificultad)",
+    dificil: " (+100% bonus dificultad)"
+  };
+  return bonuses[difficulty] || "";
 }
 
 // Leaderboard
@@ -334,9 +513,11 @@ document.getElementById("start-button").addEventListener("click", () => {
 
 //Display option buttons
 const displayOptions = () => {
-  optionsContainer.innerHTML = `<h3>Selecciona una Opción:</h3>`;
+  optionsContainer.innerHTML = `<h3>Selecciona una Categoría:</h3>`;
   let buttonCon = document.createElement("div");
-  for (let value in options) {
+  const currentOptions = getOptionsForCurrentDifficulty();
+
+  for (let value in currentOptions) {
     buttonCon.innerHTML += `<button class="options" onclick="generateWord('${value}')">${value}</button>`;
   }
   optionsContainer.appendChild(buttonCon);
@@ -356,6 +537,10 @@ const blocker = () => {
     button.disabled = true;
   });
   newGameContainer.classList.remove("hide");
+
+  // Habilitar selector de dificultad al terminar el juego
+  isGameActive = false;
+  setDifficultySelectorEnabled(true);
 };
 
 //Word Generator
@@ -371,7 +556,8 @@ const generateWord = (optionValue) => {
   letterContainer.classList.remove("hide");
   userInputSection.innerText = "";
 
-  let optionArray = options[optionValue];
+  const currentOptions = getOptionsForCurrentDifficulty();
+  let optionArray = currentOptions[optionValue];
   chosenWord = optionArray[Math.floor(Math.random() * optionArray.length)];
   chosenWord = chosenWord.toUpperCase();
 
@@ -447,12 +633,16 @@ const initializer = () => {
   count = 0;
   currentGameScore = 0;
   currentScore.textContent = "0";
+  isGameActive = true;
 
   userInputSection.innerHTML = "";
   optionsContainer.innerHTML = "";
   letterContainer.classList.add("hide");
   newGameContainer.classList.add("hide");
   letterContainer.innerHTML = "";
+
+  // Deshabilitar selector de dificultad durante el juego
+  setDifficultySelectorEnabled(false);
 
   //Array with letters A-Z + Ñ
   const lettersArray = [
@@ -475,8 +665,10 @@ const initializer = () => {
             dashes[index].innerText = char;
             winCount += 1;
             if (winCount == charArray.length) {
-              currentGameScore = calculateScore(true, 6 - count, chosenWord.length);
+              // Calcular puntuación con bonus de dificultad
+              currentGameScore = calculateScore(true, 6 - count, chosenWord.length, currentDifficultyLevel);
               scoreEarned.innerHTML = `¡Ganaste ${currentGameScore} puntos!`;
+              difficultyBonusInfo.innerHTML = `Bonus dificultad: ${getDifficultyBonusText(currentDifficultyLevel)}`;
               resultText.innerHTML = `<h2 class='win-msg'>¡Ganaste!</h2><p>La palabra era <span>${chosenWord}</span></p>`;
 
               // Actualizar puntuación en el backend
@@ -498,6 +690,7 @@ const initializer = () => {
         drawMan(count);
         if (count == 6) {
           resultText.innerHTML = `<h2 class='lose-msg'>¡Perdiste!</h2><p>La palabra era <span>${chosenWord}</span></p>`;
+          difficultyBonusInfo.innerHTML = "";
           blocker();
         }
       }
@@ -520,9 +713,10 @@ newGameButton.addEventListener("click", () => {
   initializer();
 });
 
-// Inicializar verificando autenticación y temas
+// Inicializar verificando autenticación, temas y dificultad
 window.onload = () => {
   initializeThemes(); // Inicializar sistema de temas
+  initializeDifficulty(); // Inicializar sistema de dificultad
   if (!checkAuth()) {
     authScreen.classList.remove("hide");
   }

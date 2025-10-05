@@ -172,13 +172,12 @@ body {
   border-radius: 8px;
   font-size: 1.1rem;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.5s ease;
   min-height: 50px;
 }
 
 #auth-screen button:hover {
-  background: var(--button-hover);
-  transform: translateY(-2px);
+  transform: scale(1.02);
 }
 
 #auth-screen a {
@@ -498,6 +497,99 @@ canvas {
 #result-text span {
   font-weight: 600;
   color: var(--accent-color);
+}
+
+/* ===== SELECTOR DE DIFICULTAD ===== */
+.difficulty-selector {
+  position: fixed;
+  top: 15px;
+  left: 15px;
+  z-index: 1001;
+}
+
+#difficulty-selector {
+  background: var(--container-bg);
+  color: var(--text-color);
+  border: 2px solid var(--border-color);
+  border-radius: 8px;
+  padding: 8px 12px;
+  font-size: 0.8rem;
+  cursor: pointer;
+  outline: none;
+  max-width: 140px;
+}
+
+#difficulty-selector option {
+  background: var(--container-bg);
+  color: var(--text-color);
+}
+
+/* ===== INFORMACIÓN DE DIFICULTAD ===== */
+.difficulty-info {
+  background: var(--button-bg);
+  padding: 0.8rem;
+  border-radius: 8px;
+  border: 2px solid var(--border-color);
+  margin: 1rem 0;
+  text-align: center;
+}
+
+.difficulty-info p {
+  margin: 0;
+  font-weight: bold;
+  color: var(--text-color);
+}
+
+.difficulty-info small {
+  color: var(--text-secondary);
+  font-size: 0.8rem;
+}
+
+#difficulty-bonus {
+  color: var(--accent-color);
+  font-weight: bold;
+}
+
+/* Dificultad en el juego */
+#game-difficulty {
+  font-weight: bold;
+  color: var(--accent-color);
+}
+
+/* Info bonus en resultados */
+#difficulty-bonus-info {
+  font-size: 1rem;
+  font-weight: bold;
+  margin: 0.5rem 0;
+  color: var(--accent-color);
+}
+
+/* Responsive para selectores */
+@media (max-width: 480px) {
+  .theme-selector {
+    top: 10px;
+    right: 10px;
+  }
+  
+  .difficulty-selector {
+    top: 10px;
+    left: 10px;
+  }
+  
+  #theme-selector,
+  #difficulty-selector {
+    font-size: 0.7rem;
+    padding: 6px 8px;
+    max-width: 110px;
+  }
+}
+
+@media (max-width: 360px) {
+  #theme-selector,
+  #difficulty-selector {
+    max-width: 100px;
+    font-size: 0.65rem;
+  }
 }
 
 /* ==================== MEDIA QUERIES ==================== */
