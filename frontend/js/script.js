@@ -374,7 +374,7 @@ async function loginUser(email, password) {
   return data;
 }
 
-async function updateUserScore(score) {
+async function updateUserScore(score, gameResult) {
   if (!userData) return null;
 
   try {
@@ -385,7 +385,7 @@ async function updateUserScore(score) {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${token}`
       },
-      body: JSON.stringify({ userId: userData.id, score }),
+      body: JSON.stringify({ userId: userData.id, score, gameResult }),
     });
 
     const data = await response.json();
@@ -396,7 +396,7 @@ async function updateUserScore(score) {
 
     return data;
   } catch (error) {
-    console.error('Error actualizando puntuación:', error);
+    console.error('Error actualizando estadísticas:', error);
     return null;
   }
 }
@@ -426,6 +426,17 @@ async function loadUserData(user) {
   gamesWon.textContent = userData.gamesWon || 0;
   bestScore.textContent = userData.bestScore || 0;
   currentUser.textContent = userData.username;
+
+  // Actualizar nuevos campos de estadísticas si existen
+  if (document.getElementById('games-lost')) {
+    document.getElementById('games-lost').textContent = userData.gamesLost || 0;
+  }
+  if (document.getElementById('current-streak')) {
+    document.getElementById('current-streak').textContent = userData.currentStreak || 0;
+  }
+  if (document.getElementById('max-streak')) {
+    document.getElementById('max-streak').textContent = userData.maxStreak || 0;
+  }
 
   authScreen.classList.add("hide");
   welcomeScreen.classList.remove("hide");
@@ -495,8 +506,13 @@ async function showLeaderboard() {
     const scoreItem = document.createElement("div");
     scoreItem.className = `score-item ${score.username === userData?.username ? 'current-user' : ''}`;
     scoreItem.innerHTML = `
-      <span>${index + 1}. ${score.username}</span>
-      <span>${score.best_score || 0} pts</span>
+      <div class="leaderboard-user">
+        <strong>${index + 1}. ${score.username}</strong>
+        <span>${score.best_score || 0} pts</span>
+      </div>
+      <div class="leaderboard-stats">
+        <small>Victorias: ${score.games_won || 0} | Racha: ${score.max_streak || 0}</small>
+      </div>
     `;
     scoresList.appendChild(scoreItem);
   });
@@ -671,12 +687,22 @@ const initializer = () => {
               difficultyBonusInfo.innerHTML = `Bonus dificultad: ${getDifficultyBonusText(currentDifficultyLevel)}`;
               resultText.innerHTML = `<h2 class='win-msg'>¡Ganaste!</h2><p>La palabra era <span>${chosenWord}</span></p>`;
 
-              // Actualizar puntuación en el backend
+              // Actualizar estadísticas en el backend - VICTORIA
               if (userData) {
-                updateUserScore(currentGameScore).then(updatedStats => {
+                updateUserScore(currentGameScore, 'win').then(updatedStats => {
                   if (updatedStats) {
                     gamesWon.textContent = updatedStats.gamesWon;
                     bestScore.textContent = updatedStats.bestScore;
+                    // Actualizar nuevos campos si existen en el DOM
+                    if (document.getElementById('games-lost')) {
+                      document.getElementById('games-lost').textContent = updatedStats.gamesLost;
+                    }
+                    if (document.getElementById('current-streak')) {
+                      document.getElementById('current-streak').textContent = updatedStats.currentStreak;
+                    }
+                    if (document.getElementById('max-streak')) {
+                      document.getElementById('max-streak').textContent = updatedStats.maxStreak;
+                    }
                   }
                 });
               }
@@ -688,9 +714,24 @@ const initializer = () => {
       } else {
         count += 1;
         drawMan(count);
+        // En la parte donde el usuario pierde (count == 6)
         if (count == 6) {
           resultText.innerHTML = `<h2 class='lose-msg'>¡Perdiste!</h2><p>La palabra era <span>${chosenWord}</span></p>`;
           difficultyBonusInfo.innerHTML = "";
+
+          // Actualizar estadísticas en el backend - DERROTA (score explícitamente 0)
+          if (userData) {
+            updateUserScore(0, 'lose').then(updatedStats => {
+              if (updatedStats) {
+                gamesWon.textContent = updatedStats.gamesWon;
+                bestScore.textContent = updatedStats.bestScore;
+                document.getElementById('games-lost').textContent = updatedStats.gamesLost;
+                document.getElementById('current-streak').textContent = updatedStats.currentStreak;
+                document.getElementById('max-streak').textContent = updatedStats.maxStreak;
+              }
+            });
+          }
+
           blocker();
         }
       }

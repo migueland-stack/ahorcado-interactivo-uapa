@@ -22,14 +22,17 @@ function initializeDatabase() {
         reject(err);
         return;
       }
-      
-      // Tabla de puntuaciones
+
+      // Tabla de puntuaciones - ACTUALIZADA CON NUEVOS CAMPOS
       db.run(`
         CREATE TABLE IF NOT EXISTS scores (
           id INTEGER PRIMARY KEY AUTOINCREMENT,
           user_id INTEGER,
           score INTEGER NOT NULL,
           games_won INTEGER DEFAULT 0,
+          games_lost INTEGER DEFAULT 0,
+          current_streak INTEGER DEFAULT 0,
+          max_streak INTEGER DEFAULT 0,
           best_score INTEGER DEFAULT 0,
           created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
           FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
@@ -40,7 +43,7 @@ function initializeDatabase() {
           reject(err);
           return;
         }
-        
+
         console.log('Base de datos SQLite inicializada correctamente');
         resolve();
       });
@@ -48,7 +51,7 @@ function initializeDatabase() {
   });
 }
 
-// Funciones de base de datos para SQLite
+// Funciones de base de datos para SQLite (sin cambios)
 const dbMethods = {
   get: (query, params = []) => {
     return new Promise((resolve, reject) => {
@@ -58,7 +61,7 @@ const dbMethods = {
       });
     });
   },
-  
+
   all: (query, params = []) => {
     return new Promise((resolve, reject) => {
       db.all(query, params, (err, rows) => {
@@ -67,10 +70,10 @@ const dbMethods = {
       });
     });
   },
-  
+
   run: (query, params = []) => {
     return new Promise((resolve, reject) => {
-      db.run(query, params, function(err) {
+      db.run(query, params, function (err) {
         if (err) reject(err);
         else resolve({ insertId: this.lastID, changes: this.changes });
       });
