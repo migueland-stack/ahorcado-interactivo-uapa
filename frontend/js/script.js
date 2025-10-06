@@ -1,5 +1,5 @@
 // ==================== CONFIGURACIÓN Y CONSTANTES ====================
-const API_URL = "http://localhost:3000/api";
+const API_URL = "/api"; // llamada relativa
 
 // Multiplicadores de puntuación por dificultad
 const difficultyMultipliers = {
