@@ -1,0 +1,68 @@
+# Dependencias de Node.js
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Archivos de entorno (seguridad)
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Archivos de base de datos (si no quieres subir datos de desarrollo)
+*.db
+*.sqlite
+*.db-journal
+
+# Si quieres mantener la estructura pero no los datos, puedes hacer:
+# !ahorcado.db  # (quita el comentario si quieres incluir la DB vacía)
+
+# Logs
+logs
+*.log
+
+# Archivos del sistema
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Archivos de IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Archivos de sistema operativo
+# Windows
+Desktop.ini
+$RECYCLE.BIN/
+
+# macOS
+*.icloud
+
+# Archivos de build
+dist/
+build/
+*.tgz
+*.tar.gz
+
+# Cache
+.npm
+.eslintcache
+
+# Coverage
+coverage/
+.nyc_output/
+
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
