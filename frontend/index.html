@@ -1,150 +1,205 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes"
+    />
+    <title>Ahorcado Interactivo - Proyecto</title>
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="/images/favicon-32x32.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="/images/favicon-16x16.png"
+    />
+    <link rel="apple-touch-icon" href="/images/apple-touch-icon.png" />
+    <link rel="manifest" href="/images/site.webmanifest" />
+    <meta charset="UTF-8" />
+    <!-- Google Fonts -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap"
+      rel="stylesheet"
+    />
+    <!-- Stylesheet CORREGIDO -->
+    <link rel="stylesheet" href="/css/style.css" />
+  </head>
 
-<head>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
-  <title>Ahorcado Interactivo - Proyecto</title>
-  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
-  <link rel="apple-touch-icon" href="/images/apple-touch-icon.png">
-  <link rel="manifest" href="/images/site.webmanifest">
-  <meta charset="UTF-8" />
-  <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
-  <!-- Stylesheet CORREGIDO -->
-  <link rel="stylesheet" href="/css/style.css" />
-</head>
+  <body>
+    <!-- Selector de Temas -->
+    <div id="theme-selector-container" class="theme-selector">
+      <select id="theme-selector">
+        <option value="classic">🎨 Clásico</option>
+        <option value="dark">🌙 Oscuro</option>
+        <option value="retro">👾 Retro</option>
+      </select>
+    </div>
 
-<body>
-  <!-- Selector de Temas -->
-  <div id="theme-selector-container" class="theme-selector">
-    <select id="theme-selector">
-      <option value="classic">🎨 Clásico</option>
-      <option value="dark">🌙 Oscuro</option>
-      <option value="retro">👾 Retro</option>
-    </select>
-  </div>
+    <!-- Selector de Dificultad -->
+    <div id="difficulty-selector-container" class="difficulty-selector">
+      <select id="difficulty-selector">
+        <option value="facil">😊 Fácil</option>
+        <option value="intermedio" selected>😐 Intermedio</option>
+        <option value="dificil">😰 Difícil</option>
+      </select>
+    </div>
 
-  <!-- Selector de Dificultad -->
-  <div id="difficulty-selector-container" class="difficulty-selector">
-    <select id="difficulty-selector">
-      <option value="facil">😊 Fácil</option>
-      <option value="intermedio" selected>😐 Intermedio</option>
-      <option value="dificil">😰 Difícil</option>
-    </select>
-  </div>
+    <!-- Pantalla de Autenticación -->
+    <div id="auth-screen" class="welcome-screen">
+      <div class="welcome-content">
+        <img
+          src="images/logo.webp"
+          alt="Ahorcado"
+          width="150px"
+          height="150px"
+        />
+        <h1>Ahorcado Interactivo</h1>
 
-  <!-- Pantalla de Autenticación -->
-  <div id="auth-screen" class="welcome-screen">
-    <div class="welcome-content">
-      <img src="images/logo.webp" alt="Ahorcado" width="150px" height="150px" />
-      <h1>Ahorcado Interactivo</h1>
+        <!-- Formulario de Login -->
+        <div id="login-form">
+          <h2>Iniciar Sesión</h2>
+          <input type="text" id="login-email" placeholder="Email" required />
+          <input
+            type="password"
+            id="login-password"
+            placeholder="Contraseña"
+            required
+          />
+          <button id="login-button">Iniciar Sesión</button>
+          <p>
+            ¿No tienes cuenta? <a href="#" id="show-register">Regístrate</a>
+          </p>
+        </div>
 
-      <!-- Formulario de Login -->
-      <div id="login-form">
-        <h2>Iniciar Sesión</h2>
-        <input type="text" id="login-email" placeholder="Email" required>
-        <input type="password" id="login-password" placeholder="Contraseña" required>
-        <button id="login-button">Iniciar Sesión</button>
-        <p>¿No tienes cuenta? <a href="#" id="show-register">Regístrate</a></p>
-      </div>
-
-      <!-- Formulario de Registro -->
-      <div id="register-form" class="hide">
-        <h2>Registro</h2>
-        <input type="text" id="register-email" placeholder="Email" required>
-        <input type="password" id="register-password" placeholder="Contraseña" required>
-        <input type="text" id="register-username" placeholder="Nombre de usuario" required>
-        <button id="register-button">Registrarse</button>
-        <p>¿Ya tienes cuenta? <a href="#" id="show-login">Iniciar Sesión</a></p>
+        <!-- Formulario de Registro -->
+        <div id="register-form" class="hide">
+          <h2>Registro</h2>
+          <input type="text" id="register-email" placeholder="Email" required />
+          <input
+            type="password"
+            id="register-password"
+            placeholder="Contraseña"
+            required
+          />
+          <input
+            type="text"
+            id="register-username"
+            placeholder="Nombre de usuario"
+            required
+          />
+          <button id="register-button">Registrarse</button>
+          <p>
+            ¿Ya tienes cuenta? <a href="#" id="show-login">Iniciar Sesión</a>
+          </p>
+        </div>
       </div>
     </div>
-  </div>
 
-  <!-- Pantalla de Bienvenida (después del login) -->
-  <div id="welcome-screen" class="welcome-screen hide">
-    <div class="welcome-content">
-      <img src="images/logo.webp" alt="Ahorcado" width="150px" height="150px" />
-      <h1>Bienvenido, <span id="user-name">Usuario</span>!</h1>
-      <p>¡Adivina la palabra antes de que sea demasiado tarde!🎯</p>
+    <!-- Pantalla de Bienvenida (después del login) -->
+    <div id="welcome-screen" class="welcome-screen hide">
+      <div class="welcome-content">
+        <img
+          src="images/logo.webp"
+          alt="Ahorcado"
+          width="150px"
+          height="150px"
+        />
+        <h1>Bienvenido, <span id="user-name">Usuario</span>!</h1>
+        <p>¡Adivina la palabra antes de que sea demasiado tarde!🎯</p>
 
-      <!-- Información de dificultad -->
-      <div class="difficulty-info">
-        <p>Dificultad actual: <span id="current-difficulty">Intermedio</span></p>
-        <small>Puntos bonus: <span id="difficulty-bonus">+0%</span></small>
-      </div>
+        <!-- Información de dificultad -->
+        <div class="difficulty-info">
+          <p>
+            Dificultad actual: <span id="current-difficulty">Intermedio</span>
+          </p>
+          <small>Puntos bonus: <span id="difficulty-bonus">+0%</span></small>
+        </div>
 
-      <div class="user-stats">
-        <div class="stat">
-          <h3>Partidas Ganadas</h3>
-          <span id="games-won">0</span>
+        <div class="user-stats">
+          <div class="stat">
+            <h3>Partidas Ganadas</h3>
+            <span id="games-won">0</span>
+          </div>
+          <div class="stat">
+            <h3>Partidas Perdidas</h3>
+            <span id="games-lost">0</span>
+          </div>
+          <div class="stat">
+            <h3>Mejor Puntaje</h3>
+            <span id="best-score">0</span>
+          </div>
+          <div class="stat">
+            <h3>Racha Actual</h3>
+            <span id="current-streak">0</span>
+          </div>
+          <div class="stat">
+            <h3>Racha Máxima</h3>
+            <span id="max-streak">0</span>
+          </div>
         </div>
-        <div class="stat">
-          <h3>Partidas Perdidas</h3>
-          <span id="games-lost">0</span>
-        </div>
-        <div class="stat">
-          <h3>Mejor Puntaje</h3>
-          <span id="best-score">0</span>
-        </div>
-        <div class="stat">
-          <h3>Racha Actual</h3>
-          <span id="current-streak">0</span>
-        </div>
-        <div class="stat">
-          <h3>Racha Máxima</h3>
-          <span id="max-streak">0</span>
-        </div>
-      </div>
 
-      <div class="welcome-buttons">
-        <button id="start-button">Comenzar Juego</button>
-        <button id="leaderboard-button">Top 5 Puntajes</button>
-        <button id="logout-button">Cerrar Sesión</button>
-      </div>
+        <div class="welcome-buttons">
+          <button id="start-button">Comenzar Juego</button>
+          <button id="leaderboard-button">Top 5 Puntajes</button>
+          <button id="logout-button">Cerrar Sesión</button>
+        </div>
 
-      <!-- Leaderboard -->
-      <div id="leaderboard" class="leaderboard hide">
-        <h2>🏆 Top 5 Puntajes 🏆</h2>
-        <div id="scores-list"></div>
-        <button id="back-button">Volver</button>
+        <!-- Leaderboard -->
+        <div id="leaderboard" class="leaderboard hide">
+          <h2>🏆 Top 5 Puntajes 🏆</h2>
+          <div id="scores-list"></div>
+          <button id="back-button">Volver</button>
+        </div>
       </div>
     </div>
-  </div>
 
-  <!-- Juego Principal -->
-  <div class="container hide">
-    <div class="game-header">
-      <span id="current-user">Usuario</span>
-      <span>Puntaje: <span id="current-score">0</span></span>
-      <span>Dificultad: <span id="game-difficulty">Intermedio</span></span>
+    <!-- Juego Principal -->
+    <div class="container hide">
+      <div class="game-header">
+        <span id="current-user">Usuario</span>
+        <span>Puntaje: <span id="current-score">0</span></span>
+        <span>Dificultad: <span id="game-difficulty">Intermedio</span></span>
+      </div>
+      <div id="options-container"></div>
+      <div id="letter-container" class="letter-container hide"></div>
+      <div id="user-input-section"></div>
+      <canvas id="canvas"></canvas>
+      <div id="new-game-container" class="new-game-popup hide">
+        <div id="result-text"></div>
+        <div id="score-earned"></div>
+        <div id="difficulty-bonus-info"></div>
+        <button id="new-game-button">Nuevo Juego</button>
+      </div>
     </div>
-    <div id="options-container"></div>
-    <div id="letter-container" class="letter-container hide"></div>
-    <div id="user-input-section"></div>
-    <canvas id="canvas"></canvas>
-    <div id="new-game-container" class="new-game-popup hide">
-      <div id="result-text"></div>
-      <div id="score-earned"></div>
-      <div id="difficulty-bonus-info"></div>
-      <button id="new-game-button">Nuevo Juego</button>
+    <!-- Elementos de audio ocultos -->
+    <audio id="win-sound" src="/sounds/win.mp3" preload="auto"></audio>
+    <audio id="lose-sound" src="/sounds/lose.mp3" preload="auto"></audio>
+    <!-- <audio id="drawing-sound" src="/sounds/drawing.mp3" preload="auto"></audio>-->
+    <audio id="click-sound" src="/sounds/click.mp3" preload="auto"></audio>
+
+    <!-- Control de volumen -->
+    <div id="volume-control" class="volume-control">
+      <button id="volume-toggle">🔊</button>
+      <input
+        type="range"
+        id="volume-slider"
+        min="0"
+        max="1"
+        step="0.1"
+        value="0.5"
+      />
     </div>
-  </div>
-  <!-- Elementos de audio ocultos -->
-  <audio id="win-sound" src="/sounds/win.mp3" preload="auto"></audio>
-  <audio id="lose-sound" src="/sounds/lose.mp3" preload="auto"></audio>
-  <!-- <audio id="drawing-sound" src="/sounds/drawing.mp3" preload="auto"></audio>-->
-  <audio id="click-sound" src="/sounds/click.mp3" preload="auto"></audio>
 
-  <!-- Control de volumen -->
-  <div id="volume-control" class="volume-control">
-    <button id="volume-toggle">🔊</button>
-    <input type="range" id="volume-slider" min="0" max="1" step="0.1" value="0.5">
-  </div>
+    <!-- Sistema de Notificaciones Toast -->
+    <div id="toast-container" class="toast-container"></div>
 
-  <!-- SCRIPT CORREGIDO -->
-  <script src="/js/script.js"></script>
-</body>
-
+    <!-- SCRIPT CORREGIDO -->
+    <script src="/js/script.js"></script>
+  </body>
 </html>

@@ -1,5 +1,5 @@
 // Configuración de la API
-const API_URL = 'http://localhost:3000/api';
+const API_URL = "http://localhost:3000/api";
 
 // Referencias del sistema de autenticación
 const authScreen = document.getElementById("auth-screen");
@@ -35,158 +35,581 @@ let currentGameScore = 0;
 let winCount = 0;
 let count = 0;
 let chosenWord = "";
-let currentDifficultyLevel = 'intermedio';
+let currentDifficultyLevel = "intermedio";
 let isGameActive = false;
 
 // Sistema de dificultad - Palabras organizadas por dificultad (EXPANDIDAS)
 const optionsByDifficulty = {
   facil: {
     Frutas: [
-      "Manzana", "Pera", "Uva", "Kiwi", "Fresa", "Mango", "Limon", "Melon",
-      "Coco", "Ciruela", "Higo", "Dátil", "Guinda", "Cereza", "Níspero",
-      "Grosella", "Membrillo", "Nectarina", "Albaricoque", "Mora", "Frambuesa",
-      "Arándano", "Zarzamora", "Aguacate", "Chirimoya", "Granada", "Higo"
+      "Manzana",
+      "Pera",
+      "Uva",
+      "Kiwi",
+      "Fresa",
+      "Mango",
+      "Limon",
+      "Melon",
+      "Coco",
+      "Ciruela",
+      "Higo",
+      "Dátil",
+      "Guinda",
+      "Cereza",
+      "Níspero",
+      "Grosella",
+      "Membrillo",
+      "Nectarina",
+      "Albaricoque",
+      "Mora",
+      "Frambuesa",
+      "Arándano",
+      "Zarzamora",
+      "Aguacate",
+      "Chirimoya",
+      "Granada",
+      "Higo",
     ],
     Colores: [
-      "Rojo", "Azul", "Verde", "Rosa", "Gris", "Negro", "Blanco", "Beige",
-      "Oro", "Naranja", "Lila", "Cyan", "Marron", "Bordo", "Celeste",
-      "Turquesa", "Magenta", "Violeta", "Carmesí", "Amarillo", "Índigo",
-      "Esmeralda", "AzulMarino", "VerdeLima", "Salmón", "Caqui", "Lavanda"
+      "Rojo",
+      "Azul",
+      "Verde",
+      "Rosa",
+      "Gris",
+      "Negro",
+      "Blanco",
+      "Beige",
+      "Oro",
+      "Naranja",
+      "Lila",
+      "Cyan",
+      "Marron",
+      "Bordo",
+      "Celeste",
+      "Turquesa",
+      "Magenta",
+      "Violeta",
+      "Carmesí",
+      "Amarillo",
+      "Índigo",
+      "Esmeralda",
+      "AzulMarino",
+      "VerdeLima",
+      "Salmón",
+      "Caqui",
+      "Lavanda",
     ],
     Animales: [
-      "Gato", "Perro", "Pato", "Oso", "Lobo", "Zorro", "Pez", "Rana",
-      "Loro", "Conejo", "Cabra", "Vaca", "Pollo", "Raton", "Tigre",
-      "León", "Mono", "Elefante", "Jirafa", "Cebra", "Caballo", "Oveja",
-      "Cerdo", "Gallina", "Pavo", "Pingüino", "Delfín", "Ballena", "Tiburón"
+      "Gato",
+      "Perro",
+      "Pato",
+      "Oso",
+      "Lobo",
+      "Zorro",
+      "Pez",
+      "Rana",
+      "Loro",
+      "Conejo",
+      "Cabra",
+      "Vaca",
+      "Pollo",
+      "Raton",
+      "Tigre",
+      "León",
+      "Mono",
+      "Elefante",
+      "Jirafa",
+      "Cebra",
+      "Caballo",
+      "Oveja",
+      "Cerdo",
+      "Gallina",
+      "Pavo",
+      "Pingüino",
+      "Delfín",
+      "Ballena",
+      "Tiburón",
     ],
     Comidas: [
-      "Pizza", "Taco", "Sopa", "Arroz", "Pasta", "Pan", "Queso", "Leche",
-      "Huevo", "Carne", "Pescado", "Fruta", "Verdura", "Jugo", "Agua",
-      "Yogur", "Miel", "Mantequilla", "Galleta", "Pastel", "Helado", "Chocolate",
-      "Café", "Té", "Panqueque", "Waffle", "Ensalada", "Sándwich", "Hamburguesa"
+      "Pizza",
+      "Taco",
+      "Sopa",
+      "Arroz",
+      "Pasta",
+      "Pan",
+      "Queso",
+      "Leche",
+      "Huevo",
+      "Carne",
+      "Pescado",
+      "Fruta",
+      "Verdura",
+      "Jugo",
+      "Agua",
+      "Yogur",
+      "Miel",
+      "Mantequilla",
+      "Galleta",
+      "Pastel",
+      "Helado",
+      "Chocolate",
+      "Café",
+      "Té",
+      "Panqueque",
+      "Waffle",
+      "Ensalada",
+      "Sándwich",
+      "Hamburguesa",
     ],
     Familia: [
-      "Padre", "Madre", "Hijo", "Hija", "Abuelo", "Abuela", "Tío", "Tía",
-      "Primo", "Prima", "Hermano", "Hermana", "Sobrino", "Sobrina", "Nieto",
-      "Nieta", "Esposo", "Esposa", "Novio", "Novia", "Amigo", "Amiga"
-    ]
+      "Padre",
+      "Madre",
+      "Hijo",
+      "Hija",
+      "Abuelo",
+      "Abuela",
+      "Tío",
+      "Tía",
+      "Primo",
+      "Prima",
+      "Hermano",
+      "Hermana",
+      "Sobrino",
+      "Sobrina",
+      "Nieto",
+      "Nieta",
+      "Esposo",
+      "Esposa",
+      "Novio",
+      "Novia",
+      "Amigo",
+      "Amiga",
+    ],
   },
   intermedio: {
     Frutas: [
-      "Manzana", "Arandano", "Mandarina", "Piña", "Granada", "Sandia",
-      "Platano", "Mango", "Fresa", "Kiwi", "Papaya", "Cereza",
-      "Melocoton", "Uva", "Melon", "Pera", "Guayaba", "Tamarindo",
-      "Naranja", "Limon", "Frambuesa", "Coco", "Maracuya", "Higo",
-      "Guayaba", "Litchi", "Rambután", "Carambola", "Durian", "Mangostán",
-      "Pitahaya", "Kumquat", "Pomelo", "Lima", "Caimito", "Zapote"
+      "Manzana",
+      "Arandano",
+      "Mandarina",
+      "Piña",
+      "Granada",
+      "Sandia",
+      "Platano",
+      "Mango",
+      "Fresa",
+      "Kiwi",
+      "Papaya",
+      "Cereza",
+      "Melocoton",
+      "Uva",
+      "Melon",
+      "Pera",
+      "Guayaba",
+      "Tamarindo",
+      "Naranja",
+      "Limon",
+      "Frambuesa",
+      "Coco",
+      "Maracuya",
+      "Higo",
+      "Guayaba",
+      "Litchi",
+      "Rambután",
+      "Carambola",
+      "Durian",
+      "Mangostán",
+      "Pitahaya",
+      "Kumquat",
+      "Pomelo",
+      "Lima",
+      "Caimito",
+      "Zapote",
     ],
     Animales: [
-      "Erizo", "Rinoceronte", "Ardilla", "Pantera", "Morsa", "Cebra",
-      "Elefante", "Jirafa", "Tigre", "Oso", "Lobo", "Delfin",
-      "Gato", "Perro", "Caballo", "Camello", "Pinguino", "Gorila",
-      "Zorro", "Ballena", "Koala", "Leopardo", "Canguro", "Buho",
-      "Hipopótamo", "Cocodrilo", "Serpiente", "Lagarto", "Tortuga", "Camaleón",
-      "Águila", "Halcón", "Búho", "Colibrí", "Flamenco", "PavoReal",
-      "Pulpo", "Calamar", "Medusa", "Estrella", "Erizo", "Cangrejo"
+      "Erizo",
+      "Rinoceronte",
+      "Ardilla",
+      "Pantera",
+      "Morsa",
+      "Cebra",
+      "Elefante",
+      "Jirafa",
+      "Tigre",
+      "Oso",
+      "Lobo",
+      "Delfin",
+      "Gato",
+      "Perro",
+      "Caballo",
+      "Camello",
+      "Pinguino",
+      "Gorila",
+      "Zorro",
+      "Ballena",
+      "Koala",
+      "Leopardo",
+      "Canguro",
+      "Buho",
+      "Hipopótamo",
+      "Cocodrilo",
+      "Serpiente",
+      "Lagarto",
+      "Tortuga",
+      "Camaleón",
+      "Águila",
+      "Halcón",
+      "Búho",
+      "Colibrí",
+      "Flamenco",
+      "PavoReal",
+      "Pulpo",
+      "Calamar",
+      "Medusa",
+      "Estrella",
+      "Erizo",
+      "Cangrejo",
     ],
     Colores: [
-      "Rojo", "Azul", "Verde", "Amarillo", "Rosa", "Negro",
-      "Blanco", "Gris", "Marron", "Naranja", "Violeta", "Turquesa",
-      "Beige", "Celeste", "Dorado", "Plateado", "Magenta", "Cian",
-      "Carmesí", "Escarlata", "Granate", "Púrpura", "Lavanda", "Malva",
-      "Ocre", "Canela", "Chocolate", "Ébano", "Marfil", "Perla"
+      "Rojo",
+      "Azul",
+      "Verde",
+      "Amarillo",
+      "Rosa",
+      "Negro",
+      "Blanco",
+      "Gris",
+      "Marron",
+      "Naranja",
+      "Violeta",
+      "Turquesa",
+      "Beige",
+      "Celeste",
+      "Dorado",
+      "Plateado",
+      "Magenta",
+      "Cian",
+      "Carmesí",
+      "Escarlata",
+      "Granate",
+      "Púrpura",
+      "Lavanda",
+      "Malva",
+      "Ocre",
+      "Canela",
+      "Chocolate",
+      "Ébano",
+      "Marfil",
+      "Perla",
     ],
     Comidas: [
-      "Pizza", "Hamburguesa", "Sushi", "Taco", "Empanada", "Arepa",
-      "Paella", "Pasta", "Ensalada", "Ceviche", "Burrito", "Hotdog",
-      "Lasaña", "Croqueta", "Sopa", "Tortilla", "Tamales", "Gazpacho",
-      "Risotto", "Falafel", "Hummus", "Guacamole", "Ratatouille", "Borscht",
-      "Goulash", "Curry", "Biryani", "Pho", "Ramen", "Tagine"
+      "Pizza",
+      "Hamburguesa",
+      "Sushi",
+      "Taco",
+      "Empanada",
+      "Arepa",
+      "Paella",
+      "Pasta",
+      "Ensalada",
+      "Ceviche",
+      "Burrito",
+      "Hotdog",
+      "Lasaña",
+      "Croqueta",
+      "Sopa",
+      "Tortilla",
+      "Tamales",
+      "Gazpacho",
+      "Risotto",
+      "Falafel",
+      "Hummus",
+      "Guacamole",
+      "Ratatouille",
+      "Borscht",
+      "Goulash",
+      "Curry",
+      "Biryani",
+      "Pho",
+      "Ramen",
+      "Tagine",
     ],
     Profesiones: [
-      "Doctor", "Ingeniero", "Maestro", "Policia", "Bombero", "Carpintero",
-      "Panadero", "Electricista", "Mecanico", "Arquitecto", "Abogado", "Enfermero",
-      "Científico", "Investigador", "Programador", "Diseñador", "Artista", "Músico",
-      "Escritor", "Periodista", "Fotógrafo", "Cocinero", "Agricultor", "Pescador",
-      "Piloto", "Conductor", "Vendedor", "Gerente", "Contador", "Economista"
+      "Doctor",
+      "Ingeniero",
+      "Maestro",
+      "Policia",
+      "Bombero",
+      "Carpintero",
+      "Panadero",
+      "Electricista",
+      "Mecanico",
+      "Arquitecto",
+      "Abogado",
+      "Enfermero",
+      "Científico",
+      "Investigador",
+      "Programador",
+      "Diseñador",
+      "Artista",
+      "Músico",
+      "Escritor",
+      "Periodista",
+      "Fotógrafo",
+      "Cocinero",
+      "Agricultor",
+      "Pescador",
+      "Piloto",
+      "Conductor",
+      "Vendedor",
+      "Gerente",
+      "Contador",
+      "Economista",
     ],
     Deportes: [
-      "Fútbol", "Baloncesto", "Tenis", "Natación", "Ciclismo", "Atletismo",
-      "Boxeo", "Judo", "Karate", "Esgrima", "Gimnasia", "Voleibol",
-      "Rugby", "Hockey", "Golf", "Béisbol", "Críquet", "Bádminton",
-      "Pádel", "Squash", "Surf", "Snowboard", "Esquí", "Escalada"
-    ]
+      "Fútbol",
+      "Baloncesto",
+      "Tenis",
+      "Natación",
+      "Ciclismo",
+      "Atletismo",
+      "Boxeo",
+      "Judo",
+      "Karate",
+      "Esgrima",
+      "Gimnasia",
+      "Voleibol",
+      "Rugby",
+      "Hockey",
+      "Golf",
+      "Béisbol",
+      "Críquet",
+      "Bádminton",
+      "Pádel",
+      "Squash",
+      "Surf",
+      "Snowboard",
+      "Esquí",
+      "Escalada",
+    ],
   },
   dificil: {
     Paises: [
-      "Kirguistan", "Zimbabue", "Dominica", "Argentina", "Australia",
-      "Mozambique", "Turkmenistan", "Madagascar", "Guatemala", "Venezuela",
-      "Kazajistan", "Azerbaiyan", "Bangladesh", "Turkmenistan", "Uzbekistan",
-      "Tayikistan", "Kuwait", "Qatar", "Baréin", "EmiratosÁrabes", "Omán",
-      "Bután", "Nepal", "SriLanka", "Maldivas", "TimorOriental", "PapúaNuevaGuinea",
-      "Micronesia", "Palaos", "Vanuatu", "Tuvalu", "Kiribati", "Nauru", "Samoa"
+      "Kirguistan",
+      "Zimbabue",
+      "Dominica",
+      "Argentina",
+      "Australia",
+      "Mozambique",
+      "Turkmenistan",
+      "Madagascar",
+      "Guatemala",
+      "Venezuela",
+      "Kazajistan",
+      "Azerbaiyan",
+      "Bangladesh",
+      "Turkmenistan",
+      "Uzbekistan",
+      "Tayikistan",
+      "Kuwait",
+      "Qatar",
+      "Baréin",
+      "EmiratosÁrabes",
+      "Omán",
+      "Bután",
+      "Nepal",
+      "SriLanka",
+      "Maldivas",
+      "TimorOriental",
+      "PapúaNuevaGuinea",
+      "Micronesia",
+      "Palaos",
+      "Vanuatu",
+      "Tuvalu",
+      "Kiribati",
+      "Nauru",
+      "Samoa",
     ],
     Ciudades: [
-      "Barcelona", "Montevideo", "Estocolmo", "Yakarta", "Melbourne",
-      "BuenosAires", "Johannesburgo", "Philadelphia", "SanPetersburgo",
-      "Guadalajara", "Cartagena", "Valparaíso", "Mendoza", "Salvador",
-      "Recife", "Fortaleza", "Manila", "Bangkok", "Seúl", "Osaka",
-      "Yokohama", "Nagoya", "Sapporo", "Kioto", "Busán", "Incheon",
-      "Calcuta", "Chennai", "Bangalore", "Hyderabad", "Ahmedabad"
+      "Barcelona",
+      "Montevideo",
+      "Estocolmo",
+      "Yakarta",
+      "Melbourne",
+      "BuenosAires",
+      "Johannesburgo",
+      "Philadelphia",
+      "SanPetersburgo",
+      "Guadalajara",
+      "Cartagena",
+      "Valparaíso",
+      "Mendoza",
+      "Salvador",
+      "Recife",
+      "Fortaleza",
+      "Manila",
+      "Bangkok",
+      "Seúl",
+      "Osaka",
+      "Yokohama",
+      "Nagoya",
+      "Sapporo",
+      "Kioto",
+      "Busán",
+      "Incheon",
+      "Calcuta",
+      "Chennai",
+      "Bangalore",
+      "Hyderabad",
+      "Ahmedabad",
     ],
     Profesiones: [
-      "Arquitecto", "Ingeniero", "Programador", "Electricista", "Neurocirujano",
-      "Astrofisico", "Bioquimico", "Psicologo", "Sociologo", "Antropologo",
-      "Geologo", "Meteorologo", "Oceanografo", "Sismologo", "Volcanologo",
-      "Paleontólogo", "Arqueólogo", "Lingüista", "Filósofo", "Teólogo",
-      "Cardiólogo", "Neurólogo", "Oncólogo", "Pediatra", "Ginecólogo",
-      "Traumatólogo", "Dermatólogo", "Oftalmólogo", "Otorrinolaringólogo"
+      "Arquitecto",
+      "Ingeniero",
+      "Programador",
+      "Electricista",
+      "Neurocirujano",
+      "Astrofisico",
+      "Bioquimico",
+      "Psicologo",
+      "Sociologo",
+      "Antropologo",
+      "Geologo",
+      "Meteorologo",
+      "Oceanografo",
+      "Sismologo",
+      "Volcanologo",
+      "Paleontólogo",
+      "Arqueólogo",
+      "Lingüista",
+      "Filósofo",
+      "Teólogo",
+      "Cardiólogo",
+      "Neurólogo",
+      "Oncólogo",
+      "Pediatra",
+      "Ginecólogo",
+      "Traumatólogo",
+      "Dermatólogo",
+      "Oftalmólogo",
+      "Otorrinolaringólogo",
     ],
     Animales: [
-      "Ornitorrinco", "Armadillo", "Cangrejo", "Medusa", "Pulpo",
-      "Calamar", "Estrella", "Erizo", "Anemonas", "Coral",
-      "Almeja", "Mejillon", "Ostra", "Vieira", "Nautilo",
-      "Ajolote", "Quimera", "Celacanto", "Tuatara", "Komodo",
-      "Pangolín", "Okapi", "Narval", "Mantis", "Avestruz",
-      "Cóndor", "Albatros", "Pelícano", "Fragata", "Cormorán"
+      "Ornitorrinco",
+      "Armadillo",
+      "Cangrejo",
+      "Medusa",
+      "Pulpo",
+      "Calamar",
+      "Estrella",
+      "Erizo",
+      "Anemonas",
+      "Coral",
+      "Almeja",
+      "Mejillon",
+      "Ostra",
+      "Vieira",
+      "Nautilo",
+      "Ajolote",
+      "Quimera",
+      "Celacanto",
+      "Tuatara",
+      "Komodo",
+      "Pangolín",
+      "Okapi",
+      "Narval",
+      "Mantis",
+      "Avestruz",
+      "Cóndor",
+      "Albatros",
+      "Pelícano",
+      "Fragata",
+      "Cormorán",
     ],
     Ciencia: [
-      "Telescopio", "Microscopio", "Termómetro", "Barómetro", "Hidrómetro",
-      "Acelerador", "Colisionador", "Espectrómetro", "Cromatógrafo", "Centrífuga",
-      "Autoclave", "Incubadora", "Pipeta", "Bureta", "Matraz", "Probeta",
-      "Crisol", "Mortero", "Embudo", "VidrioReloj", "Portaobjetos", "Cubeta",
-      "Electrodo", "Transistor", "Diodo", "Resistor", "Condensador", "Inductor"
+      "Telescopio",
+      "Microscopio",
+      "Termómetro",
+      "Barómetro",
+      "Hidrómetro",
+      "Acelerador",
+      "Colisionador",
+      "Espectrómetro",
+      "Cromatógrafo",
+      "Centrífuga",
+      "Autoclave",
+      "Incubadora",
+      "Pipeta",
+      "Bureta",
+      "Matraz",
+      "Probeta",
+      "Crisol",
+      "Mortero",
+      "Embudo",
+      "VidrioReloj",
+      "Portaobjetos",
+      "Cubeta",
+      "Electrodo",
+      "Transistor",
+      "Diodo",
+      "Resistor",
+      "Condensador",
+      "Inductor",
     ],
     Literatura: [
-      "Quijote", "MobyDick", "Ulises", "Orgullo", "Prejuicio", "Cumbres",
-      "Borroscas", "Rayuela", "CienAños", "Soledad", "Niebla", "Plenilunio",
-      "Alicia", "Wonderland", "Oz", "Neverland", "Narnia", "TierraMedia",
-      "Westeros", "Poniente", "Hogwarts", "Howgarts", "Atlántida", "Avalon",
-      "Camelot", "ShangriLa", "ElDorado", "Lemuria", "Hiperbórea"
-    ]
-  }
+      "Quijote",
+      "MobyDick",
+      "Ulises",
+      "Orgullo",
+      "Prejuicio",
+      "Cumbres",
+      "Borroscas",
+      "Rayuela",
+      "CienAños",
+      "Soledad",
+      "Niebla",
+      "Plenilunio",
+      "Alicia",
+      "Wonderland",
+      "Oz",
+      "Neverland",
+      "Narnia",
+      "TierraMedia",
+      "Westeros",
+      "Poniente",
+      "Hogwarts",
+      "Howgarts",
+      "Atlántida",
+      "Avalon",
+      "Camelot",
+      "ShangriLa",
+      "ElDorado",
+      "Lemuria",
+      "Hiperbórea",
+    ],
+  },
 };
 
 // Multiplicadores de puntuación por dificultad
 const difficultyMultipliers = {
-  facil: 1.0,      // 0% bonus
+  facil: 1.0, // 0% bonus
   intermedio: 1.5, // 50% bonus
-  dificil: 2.0     // 100% bonus
+  dificil: 2.0, // 100% bonus
 };
 
 // ==================== SISTEMA DE DIFICULTAD ====================
 
 // Inicializar sistema de dificultad
 function initializeDifficulty() {
-  const difficultySelector = document.getElementById('difficulty-selector');
+  const difficultySelector = document.getElementById("difficulty-selector");
 
   // Cargar dificultad guardada
-  const savedDifficulty = localStorage.getItem('selectedDifficulty') || 'intermedio';
+  const savedDifficulty =
+    localStorage.getItem("selectedDifficulty") || "intermedio";
   changeDifficulty(savedDifficulty);
   difficultySelector.value = savedDifficulty;
 
   // Event listener para cambiar dificultad
-  difficultySelector.addEventListener('change', (e) => {
+  difficultySelector.addEventListener("change", (e) => {
     if (!isGameActive) {
       changeDifficulty(e.target.value);
     }
@@ -196,7 +619,7 @@ function initializeDifficulty() {
 // Cambiar dificultad
 function changeDifficulty(difficulty) {
   currentDifficultyLevel = difficulty;
-  localStorage.setItem('selectedDifficulty', difficulty);
+  localStorage.setItem("selectedDifficulty", difficulty);
 
   // Actualizar interfaz
   updateDifficultyUI(difficulty);
@@ -205,15 +628,15 @@ function changeDifficulty(difficulty) {
 // Actualizar interfaz de dificultad
 function updateDifficultyUI(difficulty) {
   const difficultyNames = {
-    facil: 'Fácil',
-    intermedio: 'Intermedio',
-    dificil: 'Difícil'
+    facil: "Fácil",
+    intermedio: "Intermedio",
+    dificil: "Difícil",
   };
 
   const bonusPercentages = {
-    facil: '+0%',
-    intermedio: '+50%',
-    dificil: '+100%'
+    facil: "+0%",
+    intermedio: "+50%",
+    dificil: "+100%",
   };
 
   currentDifficulty.textContent = difficultyNames[difficulty];
@@ -223,20 +646,23 @@ function updateDifficultyUI(difficulty) {
 
 // Obtener opciones según la dificultad actual
 function getOptionsForCurrentDifficulty() {
-  return optionsByDifficulty[currentDifficultyLevel] || optionsByDifficulty.intermedio;
+  return (
+    optionsByDifficulty[currentDifficultyLevel] ||
+    optionsByDifficulty.intermedio
+  );
 }
 
 // Controlar estado del selector de dificultad
 function setDifficultySelectorEnabled(enabled) {
-  const difficultySelector = document.getElementById('difficulty-selector');
+  const difficultySelector = document.getElementById("difficulty-selector");
   difficultySelector.disabled = !enabled;
 
   if (!enabled) {
-    difficultySelector.style.opacity = '0.6';
-    difficultySelector.style.cursor = 'not-allowed';
+    difficultySelector.style.opacity = "0.6";
+    difficultySelector.style.cursor = "not-allowed";
   } else {
-    difficultySelector.style.opacity = '1';
-    difficultySelector.style.cursor = 'pointer';
+    difficultySelector.style.opacity = "1";
+    difficultySelector.style.cursor = "pointer";
   }
 }
 
@@ -244,23 +670,23 @@ function setDifficultySelectorEnabled(enabled) {
 
 // Inicializar sistema de temas
 function initializeThemes() {
-  const themeSelector = document.getElementById('theme-selector');
+  const themeSelector = document.getElementById("theme-selector");
 
   // Cargar tema guardado
-  const savedTheme = localStorage.getItem('selectedTheme') || 'classic';
+  const savedTheme = localStorage.getItem("selectedTheme") || "classic";
   changeTheme(savedTheme);
   themeSelector.value = savedTheme;
 
   // Event listener para cambiar tema
-  themeSelector.addEventListener('change', (e) => {
+  themeSelector.addEventListener("change", (e) => {
     changeTheme(e.target.value);
   });
 }
 
 // Cambiar tema
 function changeTheme(themeName) {
-  document.documentElement.setAttribute('data-theme', themeName);
-  localStorage.setItem('selectedTheme', themeName);
+  document.documentElement.setAttribute("data-theme", themeName);
+  localStorage.setItem("selectedTheme", themeName);
 
   // Actualizar color del canvas según el tema
   updateCanvasColor(themeName);
@@ -268,18 +694,18 @@ function changeTheme(themeName) {
 
 // Actualizar color del canvas
 function updateCanvasColor(themeName) {
-  const canvas = document.getElementById('canvas');
-  const context = canvas.getContext('2d');
+  const canvas = document.getElementById("canvas");
+  const context = canvas.getContext("2d");
 
   switch (themeName) {
-    case 'dark':
-      context.strokeStyle = '#ffffff';
+    case "dark":
+      context.strokeStyle = "#ffffff";
       break;
-    case 'retro':
-      context.strokeStyle = '#00ff00';
+    case "retro":
+      context.strokeStyle = "#00ff00";
       break;
     default: // classic
-      context.strokeStyle = '#000000';
+      context.strokeStyle = "#000000";
   }
 }
 
@@ -299,18 +725,21 @@ document.getElementById("show-login").addEventListener("click", (e) => {
 });
 
 // Registro
-document.getElementById("register-button").addEventListener("click", async () => {
-  const email = document.getElementById("register-email").value;
-  const password = document.getElementById("register-password").value;
-  const username = document.getElementById("register-username").value;
+document
+  .getElementById("register-button")
+  .addEventListener("click", async () => {
+    const email = document.getElementById("register-email").value;
+    const password = document.getElementById("register-password").value;
+    const username = document.getElementById("register-username").value;
 
-  try {
-    const data = await registerUser(email, password, username);
-    await loadUserData(data.user);
-  } catch (error) {
-    alert("Error al registrar: " + error.message);
-  }
-});
+    try {
+      const data = await registerUser(email, password, username);
+      await loadUserData(data.user);
+      toast.success(`¡Bienvenido ${username}!`, "Registro exitoso");
+    } catch (error) {
+      toast.error(error.message, "Error en registro");
+    }
+  });
 
 // Login
 document.getElementById("login-button").addEventListener("click", async () => {
@@ -320,8 +749,12 @@ document.getElementById("login-button").addEventListener("click", async () => {
   try {
     const data = await loginUser(email, password);
     await loadUserData(data.user);
+    toast.success(
+      `¡Bienvenido de vuelta ${data.user.username}!`,
+      "Sesión iniciada"
+    );
   } catch (error) {
-    alert("Error al iniciar sesión: " + error.message);
+    toast.error(error.message, "Error en inicio de sesión");
   }
 });
 
@@ -334,9 +767,9 @@ document.getElementById("logout-button").addEventListener("click", () => {
 
 async function registerUser(email, password, username) {
   const response = await fetch(`${API_URL}/auth/register`, {
-    method: 'POST',
+    method: "POST",
     headers: {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
     },
     body: JSON.stringify({ email, password, username }),
   });
@@ -347,17 +780,17 @@ async function registerUser(email, password, username) {
     throw new Error(data.error);
   }
 
-  localStorage.setItem('token', data.token);
-  localStorage.setItem('user', JSON.stringify(data.user));
+  localStorage.setItem("token", data.token);
+  localStorage.setItem("user", JSON.stringify(data.user));
 
   return data;
 }
 
 async function loginUser(email, password) {
   const response = await fetch(`${API_URL}/auth/login`, {
-    method: 'POST',
+    method: "POST",
     headers: {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
     },
     body: JSON.stringify({ email, password }),
   });
@@ -368,8 +801,8 @@ async function loginUser(email, password) {
     throw new Error(data.error);
   }
 
-  localStorage.setItem('token', data.token);
-  localStorage.setItem('user', JSON.stringify(data.user));
+  localStorage.setItem("token", data.token);
+  localStorage.setItem("user", JSON.stringify(data.user));
 
   return data;
 }
@@ -378,12 +811,12 @@ async function updateUserScore(score, gameResult) {
   if (!userData) return null;
 
   try {
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem("token");
     const response = await fetch(`${API_URL}/scores/update`, {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify({ userId: userData.id, score, gameResult }),
     });
@@ -396,7 +829,7 @@ async function updateUserScore(score, gameResult) {
 
     return data;
   } catch (error) {
-    console.error('Error actualizando estadísticas:', error);
+    console.error("Error actualizando estadísticas:", error);
     return null;
   }
 }
@@ -412,7 +845,7 @@ async function getLeaderboard() {
 
     return data;
   } catch (error) {
-    console.error('Error obteniendo leaderboard:', error);
+    console.error("Error obteniendo leaderboard:", error);
     return [];
   }
 }
@@ -428,14 +861,15 @@ async function loadUserData(user) {
   currentUser.textContent = userData.username;
 
   // Actualizar nuevos campos de estadísticas si existen
-  if (document.getElementById('games-lost')) {
-    document.getElementById('games-lost').textContent = userData.gamesLost || 0;
+  if (document.getElementById("games-lost")) {
+    document.getElementById("games-lost").textContent = userData.gamesLost || 0;
   }
-  if (document.getElementById('current-streak')) {
-    document.getElementById('current-streak').textContent = userData.currentStreak || 0;
+  if (document.getElementById("current-streak")) {
+    document.getElementById("current-streak").textContent =
+      userData.currentStreak || 0;
   }
-  if (document.getElementById('max-streak')) {
-    document.getElementById('max-streak').textContent = userData.maxStreak || 0;
+  if (document.getElementById("max-streak")) {
+    document.getElementById("max-streak").textContent = userData.maxStreak || 0;
   }
 
   authScreen.classList.add("hide");
@@ -443,15 +877,15 @@ async function loadUserData(user) {
 }
 
 function logout() {
-  localStorage.removeItem('token');
-  localStorage.removeItem('user');
+  localStorage.removeItem("token");
+  localStorage.removeItem("user");
   userData = null;
   window.location.reload();
 }
 
 function checkAuth() {
-  const token = localStorage.getItem('token');
-  const user = localStorage.getItem('user');
+  const token = localStorage.getItem("token");
+  const user = localStorage.getItem("user");
 
   if (token && user) {
     userData = JSON.parse(user);
@@ -481,17 +915,19 @@ function getDifficultyBonusText(difficulty) {
   const bonuses = {
     facil: "",
     intermedio: " (+50% bonus dificultad)",
-    dificil: " (+100% bonus dificultad)"
+    dificil: " (+100% bonus dificultad)",
   };
   return bonuses[difficulty] || "";
 }
 
 // Leaderboard
-document.getElementById("leaderboard-button").addEventListener("click", async () => {
-  await showLeaderboard();
-  document.querySelector(".welcome-buttons").classList.add("hide");
-  leaderboardDiv.classList.remove("hide");
-});
+document
+  .getElementById("leaderboard-button")
+  .addEventListener("click", async () => {
+    await showLeaderboard();
+    document.querySelector(".welcome-buttons").classList.add("hide");
+    leaderboardDiv.classList.remove("hide");
+  });
 
 document.getElementById("back-button").addEventListener("click", () => {
   leaderboardDiv.classList.add("hide");
@@ -504,14 +940,18 @@ async function showLeaderboard() {
 
   scores.forEach((score, index) => {
     const scoreItem = document.createElement("div");
-    scoreItem.className = `score-item ${score.username === userData?.username ? 'current-user' : ''}`;
+    scoreItem.className = `score-item ${
+      score.username === userData?.username ? "current-user" : ""
+    }`;
     scoreItem.innerHTML = `
       <div class="leaderboard-user">
         <strong>${index + 1}. ${score.username}</strong>
         <span>${score.best_score || 0} pts</span>
       </div>
       <div class="leaderboard-stats">
-        <small>Victorias: ${score.games_won || 0} | Racha: ${score.max_streak || 0}</small>
+        <small>Victorias: ${score.games_won || 0} | Racha: ${
+      score.max_streak || 0
+    }</small>
       </div>
     `;
     scoresList.appendChild(scoreItem);
@@ -587,16 +1027,16 @@ const canvasCreator = () => {
   context.beginPath();
 
   // Usar el color del tema actual
-  const currentTheme = localStorage.getItem('selectedTheme') || 'classic';
+  const currentTheme = localStorage.getItem("selectedTheme") || "classic";
   switch (currentTheme) {
-    case 'dark':
-      context.strokeStyle = '#ffffff';
+    case "dark":
+      context.strokeStyle = "#ffffff";
       break;
-    case 'retro':
-      context.strokeStyle = '#00ff00';
+    case "retro":
+      context.strokeStyle = "#00ff00";
       break;
     default:
-      context.strokeStyle = '#000000';
+      context.strokeStyle = "#000000";
   }
 
   context.lineWidth = 2;
@@ -633,13 +1073,26 @@ const canvasCreator = () => {
 const drawMan = (count) => {
   let { head, body, leftArm, rightArm, leftLeg, rightLeg } = canvasCreator();
   switch (count) {
-    case 1: head(); break;
-    case 2: body(); break;
-    case 3: leftArm(); break;
-    case 4: rightArm(); break;
-    case 5: leftLeg(); break;
-    case 6: rightLeg(); break;
-    default: break;
+    case 1:
+      head();
+      break;
+    case 2:
+      body();
+      break;
+    case 3:
+      leftArm();
+      break;
+    case 4:
+      rightArm();
+      break;
+    case 5:
+      leftLeg();
+      break;
+    case 6:
+      rightLeg();
+      break;
+    default:
+      break;
   }
 };
 
@@ -662,8 +1115,33 @@ const initializer = () => {
 
   //Array with letters A-Z + Ñ
   const lettersArray = [
-    "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M",
-    "N", "Ñ", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"
+    "A",
+    "B",
+    "C",
+    "D",
+    "E",
+    "F",
+    "G",
+    "H",
+    "I",
+    "J",
+    "K",
+    "L",
+    "M",
+    "N",
+    "Ñ",
+    "O",
+    "P",
+    "Q",
+    "R",
+    "S",
+    "T",
+    "U",
+    "V",
+    "W",
+    "X",
+    "Y",
+    "Z",
   ];
 
   lettersArray.forEach((letter) => {
@@ -671,8 +1149,7 @@ const initializer = () => {
     button.classList.add("letters");
     button.innerText = letter;
 
-    button.addEventListener('click', async () => {
-
+    button.addEventListener("click", async () => {
       // Reproducir sonido de click
       playSound(clickSound);
 
@@ -688,9 +1165,16 @@ const initializer = () => {
             winCount += 1;
             if (winCount == charArray.length) {
               // Calcular puntuación con bonus de dificultad
-              currentGameScore = calculateScore(true, 6 - count, chosenWord.length, currentDifficultyLevel);
+              currentGameScore = calculateScore(
+                true,
+                6 - count,
+                chosenWord.length,
+                currentDifficultyLevel
+              );
               scoreEarned.innerHTML = `¡Ganaste ${currentGameScore} puntos!`;
-              difficultyBonusInfo.innerHTML = `Bonus dificultad: ${getDifficultyBonusText(currentDifficultyLevel)}`;
+              difficultyBonusInfo.innerHTML = `Bonus dificultad: ${getDifficultyBonusText(
+                currentDifficultyLevel
+              )}`;
               resultText.innerHTML = `<h2 class='win-msg'>¡Ganaste!</h2><p>La palabra era <span>${chosenWord}</span></p>`;
 
               // Reproducir sonido de victoria
@@ -701,15 +1185,20 @@ const initializer = () => {
 
               // Actualizar estadísticas en el backend - VICTORIA
               if (userData) {
-                updateUserScore(currentGameScore, 'win').then(updatedStats => {
-                  if (updatedStats) {
-                    gamesWon.textContent = updatedStats.gamesWon;
-                    bestScore.textContent = updatedStats.bestScore;
-                    document.getElementById('games-lost').textContent = updatedStats.gamesLost;
-                    document.getElementById('current-streak').textContent = updatedStats.currentStreak;
-                    document.getElementById('max-streak').textContent = updatedStats.maxStreak;
+                updateUserScore(currentGameScore, "win").then(
+                  (updatedStats) => {
+                    if (updatedStats) {
+                      gamesWon.textContent = updatedStats.gamesWon;
+                      bestScore.textContent = updatedStats.bestScore;
+                      document.getElementById("games-lost").textContent =
+                        updatedStats.gamesLost;
+                      document.getElementById("current-streak").textContent =
+                        updatedStats.currentStreak;
+                      document.getElementById("max-streak").textContent =
+                        updatedStats.maxStreak;
+                    }
                   }
-                });
+                );
               }
 
               blocker();
@@ -732,13 +1221,16 @@ const initializer = () => {
 
           // Actualizar estadísticas en el backend - DERROTA
           if (userData) {
-            updateUserScore(0, 'lose').then(updatedStats => {
+            updateUserScore(0, "lose").then((updatedStats) => {
               if (updatedStats) {
                 gamesWon.textContent = updatedStats.gamesWon;
                 bestScore.textContent = updatedStats.bestScore;
-                document.getElementById('games-lost').textContent = updatedStats.gamesLost;
-                document.getElementById('current-streak').textContent = updatedStats.currentStreak;
-                document.getElementById('max-streak').textContent = updatedStats.maxStreak;
+                document.getElementById("games-lost").textContent =
+                  updatedStats.gamesLost;
+                document.getElementById("current-streak").textContent =
+                  updatedStats.currentStreak;
+                document.getElementById("max-streak").textContent =
+                  updatedStats.maxStreak;
               }
             });
           }
@@ -780,18 +1272,18 @@ let soundEnabled = true;
 let volumeLevel = 0.5;
 
 // Referencias a elementos de audio
-const winSound = document.getElementById('win-sound');
-const loseSound = document.getElementById('lose-sound');
+const winSound = document.getElementById("win-sound");
+const loseSound = document.getElementById("lose-sound");
 //const drawingSound = document.getElementById('drawing-sound');
-const clickSound = document.getElementById('click-sound');
+const clickSound = document.getElementById("click-sound");
 
 // Inicializar sistema de sonidos
 function initializeSounds() {
-  const savedSoundSetting = localStorage.getItem('soundEnabled');
-  const savedVolume = localStorage.getItem('volumeLevel');
+  const savedSoundSetting = localStorage.getItem("soundEnabled");
+  const savedVolume = localStorage.getItem("volumeLevel");
 
   if (savedSoundSetting !== null) {
-    soundEnabled = savedSoundSetting === 'true';
+    soundEnabled = savedSoundSetting === "true";
   }
   if (savedVolume !== null) {
     volumeLevel = parseFloat(savedVolume);
@@ -805,7 +1297,7 @@ function initializeSounds() {
 // Actualizar volumen de todos los sonidos
 function updateVolume() {
   const sounds = [winSound, loseSound, drawingSound, clickSound];
-  sounds.forEach(sound => {
+  sounds.forEach((sound) => {
     if (sound) {
       sound.volume = volumeLevel;
     }
@@ -814,15 +1306,15 @@ function updateVolume() {
 
 // Actualizar interfaz de volumen
 function updateVolumeUI() {
-  const volumeToggle = document.getElementById('volume-toggle');
-  const volumeSlider = document.getElementById('volume-slider');
+  const volumeToggle = document.getElementById("volume-toggle");
+  const volumeSlider = document.getElementById("volume-slider");
 
   if (volumeToggle) {
-    volumeToggle.textContent = soundEnabled ? '🔊' : '🔇';
+    volumeToggle.textContent = soundEnabled ? "🔊" : "🔇";
   }
   if (volumeSlider) {
     volumeSlider.value = volumeLevel;
-    volumeSlider.style.display = soundEnabled ? 'block' : 'none';
+    volumeSlider.style.display = soundEnabled ? "block" : "none";
   }
 }
 
@@ -831,36 +1323,36 @@ function playSound(soundElement) {
   if (!soundEnabled || !soundElement) return;
 
   soundElement.currentTime = 0;
-  soundElement.play().catch(e => {
-    console.log('Error reproduciendo sonido:', e);
+  soundElement.play().catch((e) => {
+    console.log("Error reproduciendo sonido:", e);
   });
 }
 
 // Alternar sonido on/off
 function toggleSound() {
   soundEnabled = !soundEnabled;
-  localStorage.setItem('soundEnabled', soundEnabled.toString());
+  localStorage.setItem("soundEnabled", soundEnabled.toString());
   updateVolumeUI();
 }
 
 // Cambiar volumen
 function changeVolume(value) {
   volumeLevel = parseFloat(value);
-  localStorage.setItem('volumeLevel', volumeLevel.toString());
+  localStorage.setItem("volumeLevel", volumeLevel.toString());
   updateVolume();
 }
 
 // Event listeners para controles de volumen
-document.addEventListener('DOMContentLoaded', function () {
-  const volumeToggle = document.getElementById('volume-toggle');
-  const volumeSlider = document.getElementById('volume-slider');
+document.addEventListener("DOMContentLoaded", function () {
+  const volumeToggle = document.getElementById("volume-toggle");
+  const volumeSlider = document.getElementById("volume-slider");
 
   if (volumeToggle) {
-    volumeToggle.addEventListener('click', toggleSound);
+    volumeToggle.addEventListener("click", toggleSound);
   }
 
   if (volumeSlider) {
-    volumeSlider.addEventListener('input', (e) => {
+    volumeSlider.addEventListener("input", (e) => {
       changeVolume(e.target.value);
     });
   }
@@ -870,19 +1362,30 @@ document.addEventListener('DOMContentLoaded', function () {
 
 // Crear confeti para victoria
 function createConfetti() {
-  const colors = ['#ff0000', '#00ff00', '#0000ff', '#ffff00', '#ff00ff', '#00ffff'];
+  const colors = [
+    "#ff0000",
+    "#00ff00",
+    "#0000ff",
+    "#ffff00",
+    "#ff00ff",
+    "#00ffff",
+  ];
   const container = document.body;
-  
-  for (let i = 0; i < 30; i++) { // Reducido a 30 para mejor rendimiento
-    const confetti = document.createElement('div');
-    confetti.className = 'confetti';
-    confetti.style.left = Math.random() * 100 + 'vw';
-    confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
-    confetti.style.animation = `confettiFall ${Math.random() * 2 + 1}s linear forwards`;
-    confetti.style.animationDelay = Math.random() * 1 + 's';
-    
+
+  for (let i = 0; i < 30; i++) {
+    // Reducido a 30 para mejor rendimiento
+    const confetti = document.createElement("div");
+    confetti.className = "confetti";
+    confetti.style.left = Math.random() * 100 + "vw";
+    confetti.style.backgroundColor =
+      colors[Math.floor(Math.random() * colors.length)];
+    confetti.style.animation = `confettiFall ${
+      Math.random() * 2 + 1
+    }s linear forwards`;
+    confetti.style.animationDelay = Math.random() * 1 + "s";
+
     container.appendChild(confetti);
-    
+
     // Remover después de la animación
     setTimeout(() => {
       if (confetti.parentNode) {
@@ -894,87 +1397,173 @@ function createConfetti() {
 
 // Animación de victoria CORREGIDA
 function triggerWinAnimation() {
-  const resultText = document.getElementById('result-text');
-  const canvas = document.getElementById('canvas');
-  const userInputSection = document.getElementById('user-input-section');
-  
+  const resultText = document.getElementById("result-text");
+  const canvas = document.getElementById("canvas");
+  const userInputSection = document.getElementById("user-input-section");
+
   // Animación solo de efectos visuales (sin transform)
-  document.querySelector('.container').classList.add('win-animation');
-  
+  document.querySelector(".container").classList.add("win-animation");
+
   // Efecto en el canvas
-  canvas.classList.add('canvas-celebration');
-  
+  canvas.classList.add("canvas-celebration");
+
   // Efecto en el mensaje
-  const winMessage = resultText.querySelector('.win-msg');
+  const winMessage = resultText.querySelector(".win-msg");
   if (winMessage) {
-    winMessage.classList.add('win-message-pulse');
+    winMessage.classList.add("win-message-pulse");
   }
-  
+
   // Animación suave del contenido
-  resultText.classList.add('win-content-animation');
-  userInputSection.classList.add('win-content-animation');
-  
+  resultText.classList.add("win-content-animation");
+  userInputSection.classList.add("win-content-animation");
+
   // Confeti
   createConfetti();
-  
+
   // Remover animaciones después de completarse
   setTimeout(() => {
-    document.querySelector('.container').classList.remove('win-animation');
-    canvas.classList.remove('canvas-celebration');
+    document.querySelector(".container").classList.remove("win-animation");
+    canvas.classList.remove("canvas-celebration");
     if (winMessage) {
-      winMessage.classList.remove('win-message-pulse');
+      winMessage.classList.remove("win-message-pulse");
     }
-    resultText.classList.remove('win-content-animation');
-    userInputSection.classList.remove('win-content-animation');
+    resultText.classList.remove("win-content-animation");
+    userInputSection.classList.remove("win-content-animation");
   }, 2000);
 }
 
 // Animación de derrota CORREGIDA
 function triggerLoseAnimation() {
-  const resultText = document.getElementById('result-text');
-  const canvas = document.getElementById('canvas');
-  const userInputSection = document.getElementById('user-input-section');
-  
+  const resultText = document.getElementById("result-text");
+  const canvas = document.getElementById("canvas");
+  const userInputSection = document.getElementById("user-input-section");
+
   // Animación solo de efectos visuales (sin transform que mueva el contenedor)
-  document.querySelector('.container').classList.add('lose-animation');
-  
+  document.querySelector(".container").classList.add("lose-animation");
+
   // Efecto en el canvas
-  canvas.classList.add('canvas-game-over');
-  
+  canvas.classList.add("canvas-game-over");
+
   // Efecto en el mensaje
-  const loseMessage = resultText.querySelector('.lose-msg');
+  const loseMessage = resultText.querySelector(".lose-msg");
   if (loseMessage) {
-    loseMessage.classList.add('lose-message-pulse');
+    loseMessage.classList.add("lose-message-pulse");
   }
-  
+
   // Animación suave del contenido
-  resultText.classList.add('lose-content-animation');
-  userInputSection.classList.add('lose-content-animation');
-  
+  resultText.classList.add("lose-content-animation");
+  userInputSection.classList.add("lose-content-animation");
+
   // Remover animaciones después de completarse
   setTimeout(() => {
-    document.querySelector('.container').classList.remove('lose-animation');
-    canvas.classList.remove('canvas-game-over');
+    document.querySelector(".container").classList.remove("lose-animation");
+    canvas.classList.remove("canvas-game-over");
     if (loseMessage) {
-      loseMessage.classList.remove('lose-message-pulse');
+      loseMessage.classList.remove("lose-message-pulse");
     }
-    resultText.classList.remove('lose-content-animation');
-    userInputSection.classList.remove('lose-content-animation');
+    resultText.classList.remove("lose-content-animation");
+    userInputSection.classList.remove("lose-content-animation");
   }, 1500);
 }
 
 // Animación para letras correctas (sin cambios)
 function triggerLetterAnimation(letterElement) {
-  letterElement.classList.add('letter-correct');
+  letterElement.classList.add("letter-correct");
   setTimeout(() => {
-    letterElement.classList.remove('letter-correct');
+    letterElement.classList.remove("letter-correct");
   }, 300);
 }
 
 // Animación para revelar letras en la palabra (sin cambios)
 function revealLetterAnimation(index) {
-  const dashes = document.getElementsByClassName('dashes');
+  const dashes = document.getElementsByClassName("dashes");
   if (dashes[index]) {
-    dashes[index].classList.add('revealed');
+    dashes[index].classList.add("revealed");
   }
 }
+
+// ==================== SISTEMA DE NOTIFICACIONES TOAST ====================
+
+class ToastNotification {
+  constructor() {
+    this.container = document.getElementById("toast-container");
+    this.autoCloseDelay = 5000; // 5 segundos
+  }
+
+  show(message, title = "Ahorcado Interactivo", type = "info") {
+    const toast = document.createElement("div");
+    toast.className = `toast toast-${type}`;
+
+    const icons = {
+      success: "✅",
+      error: "❌",
+      warning: "⚠️",
+      info: "ℹ️",
+    };
+
+    toast.innerHTML = `
+      <div class="toast-icon">${icons[type] || icons.info}</div>
+      <div class="toast-content">
+        <div class="toast-title">${title}</div>
+        <div class="toast-message">${message}</div>
+      </div>
+      <button class="toast-close" onclick="this.parentElement.remove()">×</button>
+    `;
+
+    this.container.appendChild(toast);
+
+    // Animación de entrada
+    setTimeout(() => toast.classList.add("show"), 10);
+
+    // Auto-eliminación
+    const removeToast = () => {
+      toast.classList.remove("show");
+      toast.classList.add("hide");
+      setTimeout(() => {
+        if (toast.parentNode) {
+          toast.parentNode.removeChild(toast);
+        }
+      }, 300);
+    };
+
+    // Auto-close
+    const autoCloseTimeout = setTimeout(removeToast, this.autoCloseDelay);
+
+    // Pausar auto-close al hacer hover
+    toast.addEventListener("mouseenter", () => {
+      clearTimeout(autoCloseTimeout);
+    });
+
+    // Reanudar auto-close al salir del hover
+    toast.addEventListener("mouseleave", () => {
+      setTimeout(removeToast, this.autoCloseDelay);
+    });
+
+    // Cerrar al hacer clic en el toast (excepto en el botón de cerrar)
+    toast.addEventListener("click", (e) => {
+      if (!e.target.classList.contains("toast-close")) {
+        removeToast();
+      }
+    });
+  }
+
+  // Métodos rápidos para diferentes tipos
+  success(message, title = "¡Éxito!") {
+    this.show(message, title, "success");
+  }
+
+  error(message, title = "Error") {
+    this.show(message, title, "error");
+  }
+
+  warning(message, title = "Advertencia") {
+    this.show(message, title, "warning");
+  }
+
+  info(message, title = "Información") {
+    this.show(message, title, "info");
+  }
+}
+
+// Instancia global del sistema de notificaciones
+const toast = new ToastNotification();
