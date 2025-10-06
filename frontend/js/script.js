@@ -1153,24 +1153,24 @@ function displayOptions() {
 
 //Block all the Buttons
 function blocker() {
-  let optionsButtons = document.querySelectorAll(".options");
-  let letterButtons = document.querySelectorAll(".letters");
+    let optionsButtons = document.querySelectorAll(".options");
+    let letterButtons = document.querySelectorAll(".letters");
+    
+    //disable all options
+    optionsButtons.forEach((button) => {
+        button.disabled = true;
+    });
 
-  //disable all options
-  optionsButtons.forEach((button) => {
-    button.disabled = true;
-  });
+    //disable all letters
+    letterButtons.forEach((button) => {
+        button.disabled = true;
+    });
+    
+    document.getElementById("new-game-container").classList.remove("hide");
 
-  //disable all letters
-  letterButtons.forEach((button) => {
-    button.disabled = true;
-  });
-
-  document.getElementById("new-game-container").classList.remove("hide");
-
-  // Habilitar selector de dificultad al terminar el juego
-  isGameActive = false;
-  setDifficultySelectorEnabled(true);
+    // ✅ HABILITAR selector de dificultad cuando el juego termina
+    isGameActive = false;
+    setDifficultySelectorEnabled(true);
 }
 
 //Word Generator
@@ -1281,7 +1281,6 @@ async function initializer() {
   winCount = 0;
   count = 0;
   currentGameScore = 0;
-  document.getElementById("current-score").textContent = "0";
   isGameActive = true;
 
   document.getElementById("user-input-section").innerHTML = "";
