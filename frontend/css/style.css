@@ -37,7 +37,7 @@
 [data-theme="retro"] {
   --primary-color: #00ff00;
   --secondary-color: #008800;
-  --accent-color: #ff00ff;
+  --accent-color: #f0fc00;
   --background-color: #000000;
   --container-bg: #0a0a0a;
   --text-color: #00ff00;
@@ -98,12 +98,6 @@ body {
 }
 
 /* ===== SELECTOR DE TEMAS ===== */
-.theme-selector {
-  position: fixed;
-  top: 15px;
-  right: 15px;
-  z-index: 1001;
-}
 
 #theme-selector {
   background: var(--container-bg);
@@ -114,7 +108,7 @@ body {
   font-size: 0.8rem;
   cursor: pointer;
   outline: none;
-  max-width: 120px;
+  width: 140px;
 }
 
 #theme-selector option {
@@ -289,31 +283,25 @@ body {
 /* ===== JUEGO PRINCIPAL ===== */
 
 /* Controles de volumen */
-.volume-control {
-  position: fixed;
-  top: 60px;
-  right: 20px;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  background: rgba(255, 255, 255, 0.9);
-  padding: 10px;
-  border-radius: 25px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  z-index: 1000;
-}
 
 #volume-toggle {
   background: none;
   border: none;
-  font-size: 24px;
+  font-size: 20px;
   cursor: pointer;
-  padding: 5px;
+  padding: 2px;
+  color: var(--text-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
 }
 
 #volume-slider {
-  width: 80px;
+  width: 60px;
   cursor: pointer;
+  flex: 1;
 }
 
 /* Asegurar que los controles sean visibles en todos los temas */
@@ -582,12 +570,6 @@ canvas {
 }
 
 /* ===== SELECTOR DE DIFICULTAD ===== */
-.difficulty-selector {
-  position: fixed;
-  top: 15px;
-  left: 15px;
-  z-index: 1001;
-}
 
 #difficulty-selector {
   background: var(--container-bg);
@@ -598,7 +580,7 @@ canvas {
   font-size: 0.8rem;
   cursor: pointer;
   outline: none;
-  max-width: 140px;
+  width: 140px;
 }
 
 #difficulty-selector option {
@@ -648,29 +630,61 @@ canvas {
 
 /* Responsive para selectores */
 @media (max-width: 480px) {
-  .theme-selector {
-    top: 10px;
-    right: 10px;
-  }
-
   .difficulty-selector {
-    top: 10px;
+    top: 50px;
     left: 10px;
   }
 
-  #theme-selector,
-  #difficulty-selector {
+  .theme-selector {
+    top: 50px; /* Ajustado para móvil */
+    left: 10px;
+  }
+
+  .volume-control {
+    top: 90px; /* Ajustado para móvil */
+    left: 10px;
+    padding: 6px 10px;
+    gap: 6px;
+    max-width: 120px;
+  }
+
+  #difficulty-selector,
+  #theme-selector {
     font-size: 0.7rem;
     padding: 6px 8px;
-    max-width: 110px;
+    width: 110px;
+  }
+
+  #volume-toggle {
+    font-size: 16px;
+    width: 20px;
+    height: 20px;
+  }
+
+  #volume-slider {
+    width: 50px;
   }
 }
 
 @media (max-width: 360px) {
-  #theme-selector,
-  #difficulty-selector {
+  .difficulty-selector,
+  .theme-selector,
+  .volume-control {
+    left: 5px;
+  }
+
+  #difficulty-selector,
+  #theme-selector {
     max-width: 100px;
     font-size: 0.65rem;
+  }
+
+  .volume-control {
+    max-width: 110px;
+  }
+
+  #volume-slider {
+    width: 45px;
   }
 }
 
@@ -833,6 +847,165 @@ canvas {
 .dashes span.revealed {
   color: #4caf50;
   transform: translateY(-5px);
+}
+
+/* ===== MENÚ DESPLEGABLE ===== */
+.menu-button {
+  position: fixed;
+  top: 15px;
+  right: 15px;
+  z-index: 1002;
+  background: var(--container-bg);
+  color: var(--text-color);
+  border: 2px solid var(--border-color);
+  border-radius: 8px;
+  padding: 10px 12px;
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  width: 45px;
+  height: 45px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--shadow);
+}
+
+.menu-button:hover {
+  background: var(--button-hover);
+  transform: scale(1.05);
+}
+
+.dropdown-menu {
+  position: fixed;
+  top: 70px;
+  right: 15px;
+  z-index: 1001;
+  background: var(--container-bg);
+  border: 3px solid var(--border-color);
+  border-radius: 12px;
+  padding: 1rem;
+  box-shadow: var(--shadow);
+  min-width: 250px;
+  backdrop-filter: blur(10px);
+}
+
+.menu-section {
+  margin-bottom: 1rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.menu-section:last-child {
+  margin-bottom: 0;
+  padding-bottom: 0;
+  border-bottom: none;
+}
+
+.menu-section label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+  color: var(--text-color);
+  font-size: 0.9rem;
+}
+
+.menu-section select {
+  width: 100%;
+  background: var(--button-bg);
+  color: var(--text-color);
+  border: 2px solid var(--border-color);
+  border-radius: 8px;
+  padding: 8px 10px;
+  font-size: 0.85rem;
+  cursor: pointer;
+  outline: none;
+}
+
+.menu-section select option {
+  background: var(--container-bg);
+  color: var(--text-color);
+}
+
+/* Ajustar el control de volumen dentro del menú */
+.menu-section .volume-control {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--button-bg);
+  padding: 6px 10px;
+  border-radius: 8px;
+  border: 2px solid var(--border-color);
+  width: 100%;
+  left: 0;
+  top: 0;
+  box-shadow: none;
+}
+
+.menu-section #volume-toggle {
+  background: none;
+  border: none;
+  font-size: 16px;
+  cursor: pointer;
+  padding: 2px;
+  color: var(--text-color);
+  width: 24px;
+  height: 24px;
+}
+
+.menu-section #volume-slider {
+  flex: 1;
+  cursor: pointer;
+}
+
+/* Remover los controles individuales antiguos */
+.theme-selector,
+.difficulty-selector,
+.volume-control {
+  display: none !important;
+}
+
+/* Responsive para el menú */
+@media (max-width: 480px) {
+  .menu-button {
+    top: 10px;
+    right: 10px;
+    width: 40px;
+    height: 40px;
+    font-size: 1rem;
+  }
+
+  .dropdown-menu {
+    top: 60px;
+    right: 10px;
+    min-width: 220px;
+  }
+
+  .menu-section {
+    margin-bottom: 0.8rem;
+    padding-bottom: 0.8rem;
+  }
+
+  .menu-section label {
+    font-size: 0.8rem;
+  }
+
+  .menu-section select {
+    font-size: 0.8rem;
+    padding: 6px 8px;
+  }
+}
+
+@media (max-width: 360px) {
+  .dropdown-menu {
+    right: 5px;
+    min-width: 200px;
+  }
+
+  .menu-section .volume-control {
+    padding: 4px 8px;
+  }
 }
 
 /* ==================== MEDIA QUERIES ==================== */
@@ -1059,137 +1232,5 @@ canvas {
   #auth-screen button:active {
     transform: scale(0.95);
     opacity: 0.8;
-  }
-}
-
-/* ===== SISTEMA DE NOTIFICACIONES TOAST ===== */
-.toast-container {
-  position: fixed;
-  top: 20px;
-  right: 20px;
-  z-index: 9999;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  max-width: 350px;
-}
-
-.toast {
-  background: var(--container-bg);
-  color: var(--text-color);
-  border: 3px solid var(--border-color);
-  border-radius: 12px;
-  padding: 16px 20px;
-  box-shadow: var(--shadow);
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  transform: translateX(400px);
-  opacity: 0;
-  transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-  max-width: 100%;
-}
-
-.toast.show {
-  transform: translateX(0);
-  opacity: 1;
-}
-
-.toast.hide {
-  transform: translateX(400px);
-  opacity: 0;
-}
-
-.toast-icon {
-  font-size: 1.5rem;
-  flex-shrink: 0;
-}
-
-.toast-content {
-  flex: 1;
-}
-
-.toast-title {
-  font-weight: 600;
-  font-size: 1rem;
-  margin-bottom: 4px;
-  color: var(--text-color);
-}
-
-.toast-message {
-  font-size: 0.9rem;
-  color: var(--text-secondary);
-  line-height: 1.4;
-}
-
-.toast-close {
-  background: none;
-  border: none;
-  color: var(--text-secondary);
-  font-size: 1.2rem;
-  cursor: pointer;
-  padding: 4px;
-  border-radius: 4px;
-  flex-shrink: 0;
-  transition: all 0.2s ease;
-}
-
-.toast-close:hover {
-  color: var(--text-color);
-  background: var(--button-hover);
-}
-
-/* Tipos de notificaciones */
-.toast-success {
-  border-color: var(--success-color);
-}
-
-.toast-success .toast-icon {
-  color: var(--success-color);
-}
-
-.toast-error {
-  border-color: var(--error-color);
-}
-
-.toast-error .toast-icon {
-  color: var(--error-color);
-}
-
-.toast-warning {
-  border-color: var(--accent-color);
-}
-
-.toast-warning .toast-icon {
-  color: var(--accent-color);
-}
-
-.toast-info {
-  border-color: #2196f3;
-}
-
-.toast-info .toast-icon {
-  color: #2196f3;
-}
-
-/* Responsive para toast */
-@media (max-width: 480px) {
-  .toast-container {
-    top: 10px;
-    right: 10px;
-    left: 10px;
-    max-width: none;
-  }
-
-  .toast {
-    padding: 14px 16px;
-  }
-
-  .toast-title {
-    font-size: 0.95rem;
-  }
-
-  .toast-message {
-    font-size: 0.85rem;
   }
 }
